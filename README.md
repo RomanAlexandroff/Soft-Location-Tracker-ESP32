@@ -1,1 +1,0 @@
-# Soft-Location-Tracker-ESP32
