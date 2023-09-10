@@ -5,15 +5,12 @@
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
-/*   Created: 2023/06/28 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/06/29 18:48:41                                ###    ###   ###     ###         */
+/*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
-/*   This firmware allows User to track an approximate location of ESP8285 based devices via      */
+/*   This firmware allows User to track an approximate location of ESP-based devices via          */
 /*   Telegram chat notifications.                                                                 */
-/*   Telegram library details: https://RandomNerdTutorials.com/telegram-group-esp32-esp8266/      */
-/*   Project created using Brian Lough's Universal Telegram Bot Library:                          */
-/*   https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot                               */
 /*   Important! Firmware file not to exeed 50% of memory. Otherwise OTA unavailable.              */
 /*                                                                                                */
 /* ********************************************************************************************** */
@@ -22,20 +19,19 @@
 # define HEADER_H
 
 #include <Arduino.h>                                                  // OTA
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <WiFiClientSecure.h>
-#include <ESP8266WiFiMulti.h>
+#include <WiFiMulti.h>
 #include <stdio.h>
-#include <ESPAsyncTCP.h>                                              // OTA
+#include <AsyncTCP.h>                                                 // OTA
 #include <ESPAsyncWebServer.h>                                        // OTA
 #include <AsyncElegantOTA.h>
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>                                              // Telegram
+#include <driver/adc.h>
+#include "esp_adc_cal.h"
+#include <esp_task_wdt.h>
 #include "credentials.h"
-extern "C" {
-  #include "user_interface.h"                                         // RTC memory read/write functions
-}
-ADC_MODE(ADC_VCC);
 
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
@@ -54,19 +50,14 @@ ADC_MODE(ADC_VCC);
 #define MAX_NETWORKS            16                                    // maximum number of Wi-Fi networks names to store in RTC memory
 #define MAX_NAME_LENGTH         18                                    // maximum number of caracters in Wi-Fi networks names to store in RTC memory
 
-typedef struct {
-unsigned short  last_wifi;
-char            scan_results[MAX_NETWORKS][MAX_NAME_LENGTH];
-} rtcMemoryStruct;
-rtcMemoryStruct rtcMng; 
+RTC_DATA_ATTR unsigned short  g_last_wifi;
+RTC_DATA_ATTR char            g_scan_results[MAX_NETWORKS][MAX_NAME_LENGTH];
+unsigned int                  g_for_this_long = SLEEP_DURATION;                     // setting Deep Sleep default length
 
-X509List cert(TELEGRAM_CERTIFICATE_ROOT);
-ESP8266WiFiMulti wifiMulti;
+WiFiMulti wifiMulti;
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
 AsyncWebServer server(80);
-             
-unsigned int    g_for_this_long = SLEEP_DURATION;                     // setting Deep Sleep default length
 
 #include "other.h"
 #include "ota_mode.h"

@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/09 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This is the Main file of the Soft Tracker Project. This firmware edition is adapted for      */
@@ -24,26 +24,25 @@ void  setup(void)
     bool  play_recorded;
 
     play_recorded = false;
-    ESP.wdtEnable(WD_TIMEOUT);                                                // watchdog
+    adc1_config_width(ADC_WIDTH_12Bit);
+    adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_0db);
+    esp_task_wdt_init(WD_TIMEOUT, true);                                      // watchdog
     #ifdef DEBUG
         Serial.begin(115200);
     #endif
     DEBUG_PRINTF("\n\n\nDEVICE START\n\n", "");
-    system_rtc_mem_read(64, &rtcMng, sizeof(rtcMng));                         // Revive variables from RTC memory after deep sleep
-    configTime(0, 0, "pool.ntp.org");
-    client.setTrustAnchors(&cert);                                            // Add root certificate for api.telegram.org
     WiFi.persistent(true);                                                    // Save WiFi configuration in flash - optional
     WiFi.mode(WIFI_STA);
     WiFi.hostname("SoftTraker");
     ft_wifi_list();
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
-        if (rtcMng.last_wifi < 0 || rtcMng.last_wifi > 12)
+        if (g_last_wifi < 0 || g_last_wifi > 12)
             ft_power_down_recovery();
-        if (rtcMng.last_wifi == 0)
+        if (g_last_wifi == 0)
             play_recorded = true;
         ft_send_location();
-        if (play_recorded && rtcMng.scan_results[0][0] != '\0')
+        if (play_recorded && g_scan_results[0][0] != '\0')
             ft_scan_report();
         battery_state = ft_battery_check();
         DEBUG_PRINTF("Current battery state is %d%%\n", battery_state);
@@ -62,7 +61,7 @@ void  setup(void)
     else
     {
         ft_wifi_scan();
-        rtcMng.last_wifi = 0;
+        g_last_wifi = 0;
     }
     ft_go_to_sleep();
 }

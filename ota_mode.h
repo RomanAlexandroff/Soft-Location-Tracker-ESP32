@@ -5,21 +5,16 @@
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
-/*   Created: 2023/06/28 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/06/29 18:48:41                                ###    ###   ###     ###         */
+/*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file allowes to update the microntroller wirelessly, simply by sending a compiled       */
 /*   binary file into its file system. The microcontroller opens a gate, accessable through       */
 /*   any web-browser via a link, that is provided by the microcontroller through both Serial      */
 /*   port and Telegram chat.                                                                      */
-/*   The functionality added using AsyncElegantOTA as well as ESPAsyncWebServer libraries:        */
-/*   https://github.com/ayushsharma82/AsyncElegantOTA                                             */
-/*   https://github.com/me-no-dev/ESPAsyncWebServer                                               */
-/*                                                                                                */
 /*   NOTE! The compiled firmware file should not exeed 50% of the microprocessor memory!          */
 /*   Otherwise the OTA update functionality may no longer be able to perform the update.          */
-/*   For ESP8285 (ESP-01M) max firmware file size equals to 522232 bytes.                         */
 /*                                                                                                */
 /* ********************************************************************************************** */
 
@@ -29,7 +24,7 @@ void  ft_ota_mode(String chat_id)
     IPAddress   ip;
     String      message;
 
-    ESP.wdtFeed();
+    esp_task_wdt_reset();
     ssid = WiFi.SSID();
     ip = WiFi.localIP();
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
@@ -48,6 +43,6 @@ void  ft_ota_mode(String chat_id)
     message += " To cancel the OTA mode without firmware update use \"off\" or \"reboot\" commands";
     bot.sendMessage(chat_id, message, "");
     message.clear();
-    ESP.wdtFeed();
+    esp_task_wdt_reset();
 }
  

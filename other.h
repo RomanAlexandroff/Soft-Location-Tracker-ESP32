@@ -5,8 +5,8 @@
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
-/*   Created: 2023/06/28 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/06/29 18:48:41                                ###    ###   ###     ###         */
+/*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file contains all the little utility functions that are not too important to have       */
@@ -16,19 +16,18 @@
 
 void  ft_go_to_sleep(void)
 {
-    ESP.wdtFeed();
-    system_rtc_mem_write(64, &rtcMng, sizeof(rtcMng));
+    esp_task_wdt_reset();
     DEBUG_PRINTF("\nGoing to sleep for %d minute(s)\n", (g_for_this_long / 60000000));
     DEBUG_PRINTF("The device was running for %d second(s) this time\n", (millis() / 1000));
     DEBUG_PRINTF("\nDEVICE STOP\n\n\n", "");
-    ESP.deepSleep(g_for_this_long, WAKE_NO_RFCAL);
+    esp_sleep_enable_timer_wakeup(g_for_this_long);
 }
 
 short  ft_battery_check(void)
 {
-    short  battery;
-      
-    battery = ceil((ESP.getVcc() - 3040) / 12.22);             // see ReadMe regarding the constants
+    short     battery;
+
+    battery = ceil((adc1_get_raw(ADC1_CHANNEL_0) - 3040) / 12.22);                 // see ReadMe regarding these constants
     if (battery <= 0)
         battery = 0;
     if (battery >= 100)

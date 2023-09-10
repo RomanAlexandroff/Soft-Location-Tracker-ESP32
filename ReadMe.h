@@ -5,8 +5,8 @@
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
-/*   Created: 2023/06/28 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/06/29 18:48:41                                ###    ###   ###     ###         */
+/*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file contains only notes.                                                               */
@@ -15,12 +15,22 @@
   
           ABOUT THE PROJECT
   
-      This firmware allows Users to track an approximate location of ESP8285-based devices via
+      This firmware allows Users to track an approximate location of ESP32-based devices via
       Telegram chat notifications.
+
+      This particular repository contains firmware for the ESP32 microprocessor/devboards.
+      How is it different from the ESP8266 / ESP8285 firmware?
+        - WiFi.h library instead of ESP8266WiFi.h,
+        - AsyncTCP.h library instead of ESPAsyncTCP.h,
+        - no need to handle security certificate,
+        - different way to enable deep sleep,
+        - different way to store variables in RTC memory,
+        - different way to measure battery charge,
+        - different way to use watchdog.
       
       How it works:
       
-      ESP8285 connects to already known Wi-Fi networks and informs a pre-set Telegram chat of
+      ESP32 connects to already known Wi-Fi networks and informs a pre-set Telegram chat of
       that fact. For it to work Users must manually input the credentials of the Wi-Fi networks
       they wish to be notified about, as well as the Telegram chat ID they wish to be notified
       to. Users also should add a personalized message to every inputed Wi-Fi network to indicate
@@ -28,9 +38,9 @@
       once per hour and notify the chat if it manages to connect. The firmware does not have
       access to any other means of location tracking.
 
-      Newly added functionality:  Wi-Fi networks recorder. If ESP8285 wakes up but cannot find
+      Newly added functionality:  Wi-Fi networks recorder. If ESP32 wakes up but cannot find
       familiar networks to connect to, it records the names of the networks it can "see" around.
-      When ESP8285 eventually connects to a known Wi-Fi network, not only it states its location,
+      When ESP32 eventually connects to a known Wi-Fi network, not only it states its location,
       but also prints out the list of networks the device "saw" since the previous successfull
       connection. Since most of Wi-Fi networks are named after the venues or places they belong to,
       the functionality allows to track locations even when no known Wi-Fi networks are available.
@@ -70,7 +80,7 @@
 
       The Soft Location Tracker hardware:
       
-      - any ESP8266 or ESP8285 module with accessable RST and GPIO16 pins;
+      - ESP32 module;
       - LiPol Battery, *230mAh, 3.7V   
       * charge-measuring function in other.h uses capacity-specific constants, hence the 230mAh capacity
         is important. To use batteries with different capacities, the constants need to be recalculated,
@@ -89,8 +99,17 @@
 
       This sketch was firstly written as a toy for my Embedded Development group chat in
       Telegram. It would allow the group chat members to track where I was without discovering
-      my precise location. The project is based on Brian Lough's Universal Telegram Bot Library:
+      my precise location.
+      
+      The project is based on Brian Lough's Universal Telegram Bot Library:
       https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
+      Telegram library details: https://RandomNerdTutorials.com/telegram-group-esp32-esp8266/
+      Project created using Brian Lough's Universal Telegram Bot Library:
+      https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
+
+      The OTA functionality added using AsyncElegantOTA as well as ESPAsyncWebServer libraries:
+      https://github.com/ayushsharma82/AsyncElegantOTA
+      https://github.com/me-no-dev/ESPAsyncWebServer
 
 
   ***********************************************************************************************
@@ -103,8 +122,7 @@
       to get stuck on the same last message!
 
       IMPORTANT! Firmware file shall not to exeed 50% of the microprocessor memory. Otherwise 
-      the OTA update functionality may no longer be able to perform the update. For ESP8285
-      max firmware file size equals to 522232 bytes.
+      the OTA update functionality may no longer be able to perform the update.
 
       UNSOLVED! If I write a command to the bot using reply function, it stops responding 
       to any commands at all. Other than that it continues properly working and continues reporting 
@@ -168,9 +186,9 @@
       CALCULATING CONSTANTS FOR BATTERY CHARGE FUNCTION
 
       First, you need to find out so called Battery_Max_Reading. Fully charge your battery,
-      connect it to your ESP, measure the battery state with "ESP.getVcc()" command and output
-      the measurements into Serial monitor. Battery_Max_Reading is the first number outputed to
-      Serial monitor. You will need it later.
+      connect it to your ESP, measure the battery state with "adc1_get_raw(ADC1_CHANNEL_0)" command
+      and output the measurements into Serial monitor. Battery_Max_Reading is the first number
+      outputed to Serial monitor. You will need it later.
 
       Second, you need to find out so called Battery_Min_Reading. Let ESP connected to Serial 
       monitor until the battery drowns down and ESP browns-out. Battery_Min_Reading is the last 
@@ -188,7 +206,7 @@
 
       Put the obtained constants into the sketch accordingly:
 
-      battery = ceil((ESP.getVcc() - Battery_Min_Reading) / Battery_Coefficient);
+      battery = ceil((adc1_get_raw(ADC1_CHANNEL_0) - Battery_Min_Reading) / Battery_Coefficient);
     
 
   *********************************************************************************************** */

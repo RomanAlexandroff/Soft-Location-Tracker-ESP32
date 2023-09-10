@@ -5,8 +5,8 @@
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
-/*   Created: 2023/06/28 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/06/29 18:48:41                                ###    ###   ###     ###         */
+/*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   List of known Wi-Fi networks in accordance with the ESP8266WiFiMulti library. More           */
@@ -29,6 +29,6 @@ void  IRAM_ATTR ft_wifi_list(void)
     wifiMulti.addAP(SSID10, PASSWORD10);
     wifiMulti.addAP(SSID11, PASSWORD11);
     wifiMulti.addAP(SSID12, "");
-    ESP.wdtFeed();
+    esp_task_wdt_reset();
 }
  

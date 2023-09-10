@@ -5,8 +5,8 @@
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
-/*   Created: 2023/06/28 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/06/29 18:48:41                                ###    ###   ###     ###         */
+/*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
+/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   These functions are for checking on new Telegram messages, reading them and reacting to      */
@@ -21,7 +21,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     short   cycles;
     String  message;
 
-    ESP.wdtFeed();
+    esp_task_wdt_reset();
     #ifdef PRIVATE
     if (chat_id != CHAT_ID)
     {
@@ -32,7 +32,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     #endif 
     if (text == "/status")
     {
-        ESP.wdtFeed();
+        esp_task_wdt_reset();
         cycles = 0;
         message = "I am connected to " + String(WiFi.SSID());   
         message += ". Signal strength is " + String(WiFi.RSSI());
@@ -43,9 +43,9 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     }
     if (text == "/recorder report")
     {
-        ESP.wdtFeed();
+        esp_task_wdt_reset();
         cycles = 0;
-        if (rtcMng.scan_results[0][0] != '\0')
+        if (g_scan_results[0][0] != '\0')
             ft_scan_report();
         else
             bot.sendMessage(CHAT_ID, "My list of unknown Wi-Fi networks is currently empty", "");
@@ -54,7 +54,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     else if (text == "/location")
     {
         cycles = 0;
-        rtcMng.last_wifi = 0;
+        g_last_wifi = 0;
         ft_send_location();
         return (cycles);
     }
@@ -101,7 +101,7 @@ short ft_new_messages(short numNewMessages)                                     
     String  text;
     String  from_name;
 
-    ESP.wdtFeed();
+    esp_task_wdt_reset();
     DEBUG_PRINTF("\nHandling new messages\n", "");
     DEBUG_PRINTF("Number of messages to handle: %d\n", numNewMessages);
     for (short i = 0; i < numNewMessages; i++) 
@@ -114,7 +114,7 @@ short ft_new_messages(short numNewMessages)                                     
         DEBUG_PRINTF("%s\n\n", text.c_str());
         cycles = ft_answer_engine(chat_id, text);
     }
-    ESP.wdtFeed();
+    esp_task_wdt_reset();
     return (cycles);
 }
 
@@ -124,7 +124,7 @@ void  ft_check_incomming_messages(short cycles)
 
     while (cycles <= WAIT_FOR_MESSAGES_LIMIT)                                       // waiting for new messages
     {
-        ESP.wdtFeed();
+        esp_task_wdt_reset();
         DEBUG_PRINTF("Waiting for incomming commands from Telegram chat\n", "");       
         numNewMessages = bot.getUpdates(bot.last_message_received + 1);             // check how many new messages in queue
         while (numNewMessages)
