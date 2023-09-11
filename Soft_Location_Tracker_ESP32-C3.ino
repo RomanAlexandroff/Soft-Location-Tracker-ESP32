@@ -10,9 +10,9 @@
 /*                                                                                                */
 /*                                                                                                */
 /*   This is the Main file of the Soft Tracker Project. This firmware edition is adapted for      */
-/*   ESP32-C3 microcontrollers. The firmware allows User to track an approximate location of      */
+/*   ESP32 microcontrollers. The firmware allows User to track an approximate location of         */
 /*   ESP-based devices via Telegram chat notifications. More details in the ReadMe file.          */
-/*   Important! Firmware file not to exeed 50% of memory. Otherwise OTA is unavailable.           */
+/*   Important! Firmware file is not to exeed 50% of memory. Otherwise OTA is unavailable.        */
 /*                                                                                                */
 /* ********************************************************************************************** */
 

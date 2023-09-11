@@ -11,7 +11,7 @@
 /*                                                                                                */
 /*   This firmware allows User to track an approximate location of ESP-based devices via          */
 /*   Telegram chat notifications.                                                                 */
-/*   Important! Firmware file not to exeed 50% of memory. Otherwise OTA unavailable.              */
+/*   Important! Firmware file is not to exeed 50% of memory. Otherwise OTA unavailable.           */
 /*                                                                                                */
 /* ********************************************************************************************** */
 
