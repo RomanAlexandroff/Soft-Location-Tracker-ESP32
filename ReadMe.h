@@ -20,9 +20,8 @@
 
       This particular repository contains firmware for the ESP32 microprocessor/devboards.
       How is it different from the ESP8266 / ESP8285 firmware?
-        - WiFi.h library instead of ESP8266WiFi.h,
-        - AsyncTCP.h library instead of ESPAsyncTCP.h,
-        - no need to handle security certificate,
+        - different set of libraries,
+        - different way to handle security certificate,
         - different way to enable deep sleep,
         - different way to store variables in RTC memory,
         - different way to measure battery charge,
