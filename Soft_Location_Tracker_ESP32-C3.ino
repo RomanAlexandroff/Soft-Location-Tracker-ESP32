@@ -34,6 +34,7 @@ void  setup(void)
     WiFi.persistent(true);                                                    // Save WiFi configuration in flash - optional
     WiFi.mode(WIFI_STA);
     WiFi.hostname("SoftTraker");
+    client.setCACert(TELEGRAM_CERTIFICATE_ROOT);
     ft_wifi_list();
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
