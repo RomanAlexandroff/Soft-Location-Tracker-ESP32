@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/15 08:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file contains only notes.                                                               */
@@ -96,14 +96,11 @@
       - refactor unused functionality from the UniversalTelegramBot library to empty memory space.
       
 
-      This sketch was firstly written as a toy for my Embedded Development group chat in
+      This sketch was firstly written as a "toy" for my Embedded Development group chat in
       Telegram. It would allow the group chat members to track where I was without discovering
       my precise location.
       
       The project is based on Brian Lough's Universal Telegram Bot Library:
-      https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
-      Telegram library details: https://RandomNerdTutorials.com/telegram-group-esp32-esp8266/
-      Project created using Brian Lough's Universal Telegram Bot Library:
       https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
 
       The OTA functionality added using AsyncElegantOTA as well as ESPAsyncWebServer libraries:
