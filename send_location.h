@@ -26,61 +26,79 @@ void  IRAM_ATTR ft_send_location(void)
     {
         g_last_wifi = 1;
         bot.sendMessage(CHAT_ID, MESSAGE1, "");
+        return;
     }
     if ((ssid == SSID2) && (g_last_wifi != 2)) 
     {
         g_last_wifi = 2;
         bot.sendMessage(CHAT_ID, MESSAGE2, "");
+        return;
     }
     if ((ssid == SSID3) && (g_last_wifi != 3)) 
     {
         g_last_wifi = 3;
         bot.sendMessage(CHAT_ID, MESSAGE3, "");
+        return;
     }
     if ((ssid == SSID4) && (g_last_wifi != 4)) 
     {
         g_last_wifi = 4;
         bot.sendMessage(CHAT_ID, MESSAGE4, "");
+        return;
     }
     if ((ssid == SSID5) && (g_last_wifi != 5)) 
     {
         g_last_wifi = 5;
         bot.sendMessage(CHAT_ID, MESSAGE5, "");
+        return;
     }
     if ((ssid == SSID6) && (g_last_wifi != 6)) 
     {
         g_last_wifi = 6;
         bot.sendMessage(CHAT_ID, MESSAGE6, "");
+        return;
     }
     if ((ssid == SSID7) && (g_last_wifi != 7)) 
     {
         g_last_wifi = 7;
         bot.sendMessage(CHAT_ID, MESSAGE7, "");
+        return;
     }
     if ((ssid == SSID8) && (g_last_wifi != 8)) 
     {
         g_last_wifi = 8;
         bot.sendMessage(CHAT_ID, MESSAGE8, "");
+        return;
     }
     if ((ssid == SSID9) && (g_last_wifi != 9)) 
     {
         g_last_wifi = 9;
         bot.sendMessage(CHAT_ID, MESSAGE9, "");
+        return;
     }
     if ((ssid == SSID10) && (g_last_wifi != 10)) 
     {
         g_last_wifi = 10;
         bot.sendMessage(CHAT_ID, MESSAGE10, "");
+        return;
     }
     if ((ssid == SSID11) && (g_last_wifi != 11)) 
     {
         g_last_wifi = 11;
         bot.sendMessage(CHAT_ID, MESSAGE11, "");
+        return;
     }
     if ((ssid == SSID12) && (g_last_wifi != 12)) 
     {
         g_last_wifi = 12;
         bot.sendMessage(CHAT_ID, MESSAGE12, "");
+        return;
+    }
+    if ((ssid == SSID13) && (g_last_wifi != 13)) 
+    {
+        g_last_wifi = 13;
+        bot.sendMessage(CHAT_ID, MESSAGE13, "");
+        return;
     }
     esp_task_wdt_reset();
 }

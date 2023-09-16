@@ -39,7 +39,7 @@ void  setup(void)
     ft_wifi_list();
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
-        if (g_last_wifi < 0 || g_last_wifi > 12)
+        if (g_last_wifi < 0 || g_last_wifi > 13)
             ft_power_down_recovery();
         if (g_last_wifi == 0)
             play_recorded = true;
