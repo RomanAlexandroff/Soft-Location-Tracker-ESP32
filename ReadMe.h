@@ -57,7 +57,7 @@
           - antispam — if the Tracker finds himself connected to the same Wi-Fi network it was
             connected to during the previous cycle, it will not send any notifications, preventing
             spamming Users with repetative messages;
-          - Wi-Fi networks recorder — even when the Tracker cannot get online it keeps tracking its
+          - Offline tracking — even when the Tracker cannot get online it keeps tracking its
             movements by recording all Wi-Fi networks it "sees" on its way;
           - battery status notifications — low battery charge will not go unnoticed by Users, since
             the Tracker can ask them to charge it via Telegram chat;
