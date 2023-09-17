@@ -30,6 +30,8 @@ void  ft_ota_mode(String chat_id)
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
     DEBUG_PRINTF("Wi-Fi network: %s\n", ssid.c_str());
     DEBUG_PRINTS("IP address: %d.%d.%d.%d\n\n", ip[0], ip[1], ip[2], ip[3]);
+    if (SPIFFS.exists("/offline_tracking_list.txt"))
+        ft_delete_spiffs_file("/offline_tracking_list.txt");
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/plain", "Soft Tracker OTA update."); });        //Starting the OTA server
     AsyncElegantOTA.begin(&server);
     server.begin();

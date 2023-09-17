@@ -37,12 +37,14 @@
       once per hour and notify the chat if it manages to connect. The firmware does not have
       access to any other means of location tracking.
 
-      Newly added functionality:  Wi-Fi networks recorder. If ESP32 wakes up but cannot find
-      familiar networks to connect to, it records the names of the networks it can "see" around.
-      When ESP32 eventually connects to a known Wi-Fi network, not only it states its location,
-      but also prints out the list of networks the device "saw" since the previous successfull
-      connection. Since most of Wi-Fi networks are named after the venues or places they belong to,
-      the functionality allows to track locations even when no known Wi-Fi networks are available.
+      Newly added functionality: Offline tracking. If ESP32 wakes up but cannot find
+      familiar networks to connect to, it records the names of the networks it can "see" around
+      into a well-structured list inside of its memory. When ESP32 eventually connects to a known 
+      Wi-Fi network, not only it states its location, but also prints out the list of networks
+      the device "saw" since the previous successfull connection. Since most of Wi-Fi networks are 
+      named after the venues or places they belong to, the functionality allows Users to track
+      the device route by simply googling the networks names even through places where no known
+      Wi-Fi networks were available.
       
       Considering that the Soft Location Tracker cannot track the exact location at the exact time,
       it provides a solid layer of privacy to anything or anyone tracked by such a device, hence the

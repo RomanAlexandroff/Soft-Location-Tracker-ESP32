@@ -59,8 +59,8 @@ UniversalTelegramBot bot(BOTtoken, client);
 AsyncWebServer server(80);
 
 #include "other.h"
-#include "ota_mode.h"
 #include "spiffs_management.h"
+#include "ota_mode.h"
 #include "offline_tracking.h"
 #include "send_location.h"
 #include "check_incomming_messages.h"
