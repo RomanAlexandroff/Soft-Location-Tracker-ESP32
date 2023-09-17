@@ -45,7 +45,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     {
         esp_task_wdt_reset();
         cycles = 0;
-        if (g_scan_results[0][0] != '\0')
+        if (SPIFFS.exists("/offline_tracking_list.txt"))
             ft_scan_report();
         else
             bot.sendMessage(CHAT_ID, "My list of unknown Wi-Fi networks is currently empty", "");
@@ -75,6 +75,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     {
         bot.sendMessage(chat_id, "Rebooting!", "");
         g_for_this_long = 10;
+        esp_sleep_enable_timer_wakeup(g_for_this_long);
         cycles = WAIT_FOR_MESSAGES_LIMIT;
         return (cycles);
     }

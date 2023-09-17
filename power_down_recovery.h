@@ -18,5 +18,7 @@ void  ft_power_down_recovery(void)
 {
     bot.sendMessage(CHAT_ID, "Hello! I am Soft Location Tracker. I am ON and ready for work!", "");
     g_last_wifi = 0;
-    ft_clear_scan_results();
+    g_offline_wakeups = 0;
+    //ft_clear_scan_results();
+    ft_delete_spiffs_file("/offline_tracking_list.txt");
 }

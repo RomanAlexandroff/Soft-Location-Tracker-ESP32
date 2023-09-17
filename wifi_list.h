@@ -29,6 +29,7 @@ void  IRAM_ATTR ft_wifi_list(void)
     wifiMulti.addAP(SSID10, PASSWORD10);
     wifiMulti.addAP(SSID11, PASSWORD11);
     wifiMulti.addAP(SSID12, "");
+    wifiMulti.addAP(SSID13, "");
     esp_task_wdt_reset();
 }
  

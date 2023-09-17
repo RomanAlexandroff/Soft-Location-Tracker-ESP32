@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/17 14:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This firmware allows User to track an approximate location of ESP-based devices via          */
@@ -28,6 +28,7 @@
 #include <AsyncElegantOTA.h>
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>                                              // Telegram
+#include <SPIFFS.h>
 #include <driver/adc.h>
 #include "esp_adc_cal.h"
 #include <esp_task_wdt.h>
@@ -47,11 +48,9 @@
 #define WAIT_FOR_OTA_LIMIT      30000                                 // in milliseconds (30000 == 30 seconds)
 #define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == 2 seconds (80 == 160 seconds == 2,5 minutes)
 #define SLEEP_DURATION          3600000000ULL                         // in microseconds (60000000 == 1 minute; 3600000000 == 1 hour)
-#define MAX_NETWORKS            16                                    // maximum number of Wi-Fi networks names to store in RTC memory
-#define MAX_NAME_LENGTH         18                                    // maximum number of caracters in Wi-Fi networks names to store in RTC memory
 
 RTC_DATA_ATTR unsigned short  g_last_wifi;
-RTC_DATA_ATTR char            g_scan_results[MAX_NETWORKS][MAX_NAME_LENGTH];
+RTC_DATA_ATTR unsigned short  g_offline_wakeups;
 unsigned int                  g_for_this_long = SLEEP_DURATION;                // setting Deep Sleep default length
 
 WiFiMulti wifiMulti;
@@ -61,25 +60,29 @@ AsyncWebServer server(80);
 
 #include "other.h"
 #include "ota_mode.h"
-#include "wifi_recorder.h"
+#include "spiffs_management.h"
+#include "offline_tracking.h"
 #include "send_location.h"
 #include "check_incomming_messages.h"
 #include "power_down_recovery.h"
 #include "wifi_list.h"
 
-void   ft_clear_scan_results(void);
-String ft_write_report_message(void);
-void   ft_scan_report(void);
-void   IRAM_ATTR ft_wifi_scan(void);
-void   IRAM_ATTR ft_wifi_list(void);
-void   IRAM_ATTR ft_send_location(void);
-void   ft_check_incomming_messages(short cycles);
-short  ft_new_messages(int numNewMessages);
-short  IRAM_ATTR ft_answer_engine(String chat_id, String text);
-void   ft_power_down_recovery(void);
-void   ft_ota_mode(String chat_id);
-short  ft_battery_check(void);
-void   ft_go_to_sleep(void);
+void    ft_write_spiffs_file(const char* file_name, String input);
+String  ft_read_spiffs_file(const char* file_name);
+void    ft_delete_spiffs_file(const char* file_name);
+void    IRAM_ATTR ft_spiffs_init(void);
+String  ft_write_report_message(void);
+void    ft_scan_report(void);
+void    IRAM_ATTR ft_wifi_scan(void);
+void    IRAM_ATTR ft_wifi_list(void);
+void    IRAM_ATTR ft_send_location(void);
+void    ft_check_incomming_messages(short cycles);
+short   ft_new_messages(int numNewMessages);
+short   IRAM_ATTR ft_answer_engine(String chat_id, String text);
+void    ft_power_down_recovery(void);
+void    ft_ota_mode(String chat_id);
+short   ft_battery_check(void);
+void    ft_go_to_sleep(void);
 
 #endif
  
