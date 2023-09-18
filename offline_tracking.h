@@ -25,22 +25,13 @@ String  ft_write_report_message(void)
         message = "";
     else
     {
-        message = "Between this and the previous report I was taken to " + String(g_offline_wakeups);   
+        message = "\n\nBetween this and the previous report I was taken to " + String(g_offline_wakeups);   
         message += " unknown locations. Until now I could not connect to a network to let you know ";
         message += "but I made you a list of Wi-Fi neworks I saw on the way. ";
         message += "By googling their names you may discover the route I traveled.\n";
         message += ft_read_spiffs_file("/offline_tracking_list.txt");
     }
     return (message);
-}
-
-void  ft_scan_report(void)
-{
-    String  message;
-
-    message = ft_write_report_message();
-    bot.sendMessage(CHAT_ID, message, "");
-    ft_delete_spiffs_file("/offline_tracking_list.txt");
 }
 
 void  IRAM_ATTR ft_wifi_scan(void)

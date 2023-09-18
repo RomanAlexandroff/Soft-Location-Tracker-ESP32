@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/18 08:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   These functions are for checking on new Telegram messages, reading them and reacting to      */
@@ -41,12 +41,12 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         message.clear();
         return (cycles);
     }
-    if (text == "/recorder report")
+    else if (text == "/recorder report")
     {
         esp_task_wdt_reset();
         cycles = 0;
         if (SPIFFS.exists("/offline_tracking_list.txt"))
-            ft_scan_report();
+            bot.sendMessage(CHAT_ID, ft_write_report_message(), "");
         else
             bot.sendMessage(CHAT_ID, "My list of unknown Wi-Fi networks is currently empty", "");
         return (cycles);

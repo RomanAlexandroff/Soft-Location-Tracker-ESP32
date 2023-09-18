@@ -51,7 +51,8 @@
 
 RTC_DATA_ATTR unsigned short  g_last_wifi;
 RTC_DATA_ATTR unsigned short  g_offline_wakeups;
-unsigned int                  g_for_this_long = SLEEP_DURATION;                // setting Deep Sleep default length
+RTC_DATA_ATTR long            g_power_loss_detector;
+unsigned int                  g_for_this_long = SLEEP_DURATION;       // setting Deep Sleep default length
 
 WiFiMulti wifiMulti;
 WiFiClientSecure client;
@@ -72,7 +73,6 @@ String  ft_read_spiffs_file(const char* file_name);
 void    ft_delete_spiffs_file(const char* file_name);
 void    IRAM_ATTR ft_spiffs_init(void);
 String  ft_write_report_message(void);
-void    ft_scan_report(void);
 void    IRAM_ATTR ft_wifi_scan(void);
 void    IRAM_ATTR ft_wifi_list(void);
 void    IRAM_ATTR ft_send_location(void);

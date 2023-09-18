@@ -21,9 +21,7 @@
 void  setup(void)
 {
     short battery_state;
-    bool  play_recorded;
 
-    play_recorded = false;
     #ifdef DEBUG
         Serial.begin(115200);
     #endif
@@ -40,13 +38,9 @@ void  setup(void)
     ft_wifi_list();
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
-        if (g_last_wifi < 0 || g_last_wifi > 13)
+        if (g_power_loss_detector != 1110111)
             ft_power_down_recovery();
-        if (g_last_wifi == 0)
-            play_recorded = true;
         ft_send_location();
-        if (play_recorded && SPIFFS.exists("/offline_tracking_list.txt"))
-            ft_scan_report();
         battery_state = ft_battery_check();
         DEBUG_PRINTF("Current battery state is %d%%\n", battery_state);
         if (battery_state <= 15)
