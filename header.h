@@ -43,7 +43,7 @@
   #define DEBUG_PRINTF(x, y)
   #define DEBUG_PRINTS(q, w, e, r, t)
 #endif
-#define WD_TIMEOUT              5000                                  // watchdog, in milliseconds (5000 == 5 seconds; 8500 — system max val)
+#define WD_TIMEOUT              8000                                  // watchdog, in milliseconds (5000 == 5 seconds; 8500 — system max val)
 #define CONNECT_TIMEOUT         5000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
 #define WAIT_FOR_OTA_LIMIT      30000                                 // in milliseconds (30000 == 30 seconds)
 #define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == 2 seconds (80 == 160 seconds == 2,5 minutes)
@@ -81,6 +81,7 @@ short   ft_new_messages(int numNewMessages);
 short   IRAM_ATTR ft_answer_engine(String chat_id, String text);
 void    ft_power_down_recovery(void);
 void    ft_ota_mode(String chat_id);
+short   ft_battery_notification(void);
 short   ft_battery_check(void);
 void    ft_go_to_sleep(void);
 

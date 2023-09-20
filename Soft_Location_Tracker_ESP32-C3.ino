@@ -20,8 +20,6 @@
 
 void  setup(void)
 {
-    short battery_state;
-
     #ifdef DEBUG
         Serial.begin(115200);
     #endif
@@ -41,19 +39,7 @@ void  setup(void)
         if (g_power_loss_detector != 1110111)
             ft_power_down_recovery();
         ft_send_location();
-        battery_state = ft_battery_check();
-        DEBUG_PRINTF("Current battery state is %d%%\n", battery_state);
-        if (battery_state <= 15)
-        {
-            bot.sendMessage(CHAT_ID, "My battery is quite low. Please, charge me when you have time!", "");
-        }
-        else if (battery_state >= 99)                                         // unlimited messaging unlocks only when charging
-        {
-            bot.sendMessage(CHAT_ID, "I'm fully charged and ready for work!", "");
-            ft_check_incomming_messages(0);                                   // 0 == check new messages for WAIT_FOR_MESSAGES_LIMIT times
-        }
-        else
-            ft_check_incomming_messages(WAIT_FOR_MESSAGES_LIMIT);             // WAIT_FOR_MESSAGES_LIMIT == check new messages only 1 time
+        ft_check_incomming_messages(ft_battery_notification());
     }
     else
     {

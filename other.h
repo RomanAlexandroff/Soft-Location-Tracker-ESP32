@@ -34,4 +34,24 @@ short  ft_battery_check(void)
         battery = 100;
     return (battery);
 }
+
+short  ft_battery_notification(void)
+{
+    short battery_state;
+
+    battery_state = ft_battery_check();
+    DEBUG_PRINTF("Current battery state is %d%%\n", battery_state);
+    if (battery_state <= 15)
+    {
+        bot.sendMessage(CHAT_ID, "My battery is quite low. Please, charge me when you have time!", "");
+        return (WAIT_FOR_MESSAGES_LIMIT);
+    }
+    else if (battery_state >= 99)
+    {
+        bot.sendMessage(CHAT_ID, "My battery is fully charged.", "");
+        return (30);
+    }
+    else
+        return (WAIT_FOR_MESSAGES_LIMIT);                                         // WAIT_FOR_MESSAGES_LIMIT == check new messages only 1 time
+}
  
