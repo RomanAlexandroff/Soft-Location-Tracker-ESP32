@@ -44,7 +44,7 @@
   #define DEBUG_PRINTS(q, w, e, r, t)
 #endif
 #define WD_TIMEOUT              5000                                  // watchdog, in milliseconds (5000 == 5 seconds; 8500 — system max val)
-#define CONNECT_TIMEOUT         10000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
+#define CONNECT_TIMEOUT         5000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
 #define WAIT_FOR_OTA_LIMIT      30000                                 // in milliseconds (30000 == 30 seconds)
 #define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == 2 seconds (80 == 160 seconds == 2,5 minutes)
 #define SLEEP_DURATION          3600000000ULL                         // in microseconds (60000000 == 1 minute; 3600000000 == 1 hour)
