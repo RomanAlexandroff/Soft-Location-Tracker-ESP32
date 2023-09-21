@@ -18,15 +18,35 @@
 /*                                                                                                */
 /* ********************************************************************************************** */
 
-void  ft_ota_mode(String chat_id) 
+short  ft_ota_mode(String chat_id) 
 {
     String      ssid;
     IPAddress   ip;
     String      message;
+    short       battery;
+    int         i;
 
     esp_task_wdt_reset();
     ssid = WiFi.SSID();
     ip = WiFi.localIP();
+    i = WAIT_FOR_OTA_LIMIT;
+    battery = ft_battery_check();
+    if (battery <= 15)
+    {
+        DEBUG_PRINTF("\nThe battery is too low to perform an OTA update safely. Connect a charging cable to proceed.\n", "");
+        message = "The battery is too low to perform an OTA update safely. ";
+        message += "Connect a charging cable to proceed. I will wait as long as I can.";
+        bot.sendMessage(chat_id, message, "");
+        while (battery > 5 && battery <= 15 && i)
+        {
+            battery = ft_battery_check();
+            esp_task_wdt_reset();
+            delay (999);
+            i--;
+        }
+        if (battery <= 15)
+            return (WAIT_FOR_MESSAGES_LIMIT);
+    }
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
     DEBUG_PRINTF("Wi-Fi network: %s\n", ssid.c_str());
     DEBUG_PRINTS("IP address: %d.%d.%d.%d\n\n", ip[0], ip[1], ip[2], ip[3]);
@@ -44,7 +64,7 @@ void  ft_ota_mode(String chat_id)
     message += "\n\nRemember that in OTA mode I will not go to sleep automatically.";
     message += " To cancel the OTA mode without firmware update use \"off\" or \"reboot\" commands";
     bot.sendMessage(chat_id, message, "");
-    message.clear();
     esp_task_wdt_reset();
+    return (-32767);
 }
  

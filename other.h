@@ -25,7 +25,7 @@ void  ft_go_to_sleep(void)
 
 short  ft_battery_check(void)
 {
-    short     battery;
+    short battery;
 
     battery = ceil((adc1_get_raw(ADC1_CHANNEL_0) - 3040) / 12.22);                 // see ReadMe regarding these constants
     if (battery <= 0)
@@ -37,19 +37,19 @@ short  ft_battery_check(void)
 
 short  ft_battery_notification(void)
 {
-    short battery_state;
+    short battery;
 
-    battery_state = ft_battery_check();
-    DEBUG_PRINTF("Current battery state is %d%%\n", battery_state);
-    if (battery_state <= 15)
+    battery = ft_battery_check();
+    DEBUG_PRINTF("Current battery state is %d%%\n", battery);
+    if (battery <= 15)
     {
         bot.sendMessage(CHAT_ID, "My battery is quite low. Please, charge me when you have time!", "");
         return (WAIT_FOR_MESSAGES_LIMIT);
     }
-    else if (battery_state >= 99)
+    else if (battery >= 100)
     {
-        bot.sendMessage(CHAT_ID, "My battery is fully charged.", "");
-        return (30);
+        bot.sendMessage(CHAT_ID, "I see I'm being charged. I will stay awake until the charging is complete just in case you need something from me.", "");
+        return (-32767);
     }
     else
         return (WAIT_FOR_MESSAGES_LIMIT);                                         // WAIT_FOR_MESSAGES_LIMIT == check new messages only 1 time

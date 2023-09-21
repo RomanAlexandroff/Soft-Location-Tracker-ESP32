@@ -38,7 +38,6 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         message += ". Signal strength is " + String(WiFi.RSSI());
         message += " dBm. My battery is " + String(ft_battery_check()) + "% charged";
         bot.sendMessage(chat_id, message, "Markdown");
-        message.clear();
         return (cycles);
     }
     else if (text == "/recorder report")
@@ -66,9 +65,9 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     }
     else if (text == ("/" + String(OTA_PASSWORD)) || text == ("/ota " + String(OTA_PASSWORD)))
     {
-        cycles = -32767;                                                              // keep the device working as long as possible while OTA
+                                                                      // keep the device working as long as possible while OTA
         bot.sendMessage(chat_id, "Password accepted", "");
-        ft_ota_mode(chat_id);
+        cycles = ft_ota_mode(chat_id);
         return (cycles);
     }
     else if (text == "/reboot")
@@ -126,15 +125,13 @@ void  ft_check_incomming_messages(short cycles)
     while (cycles <= WAIT_FOR_MESSAGES_LIMIT)                                       // waiting for new messages
     {
         esp_task_wdt_reset();
-        DEBUG_PRINTF("Waiting for incomming commands from Telegram chat\n", "");       
+        DEBUG_PRINTF("Waiting for incomming commands from Telegram chat. Waiting loop cycles: %d\n", cycles);       
         numNewMessages = bot.getUpdates(bot.last_message_received + 1);             // check how many new messages in queue
         while (numNewMessages)
         {
-            DEBUG_PRINTF("Inside of the while (numNewMessages) loop, numNewMessages == %d\n", numNewMessages);
             cycles = ft_new_messages(numNewMessages);
             numNewMessages = bot.getUpdates(bot.last_message_received + 1);
         }
-        DEBUG_PRINTF("Waiting loop cycles: %d\n", cycles);
         if ((cycles + 25) == WAIT_FOR_MESSAGES_LIMIT)
             bot.sendMessage(CHAT_ID, "It seems that I'm not currently needed. I'll wait for 1 more minute just in case and then go to sleep. To keep me awake, write me anything.", "");
         cycles++;
