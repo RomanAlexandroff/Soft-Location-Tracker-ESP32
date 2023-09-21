@@ -46,6 +46,7 @@ short  ft_ota_mode(String chat_id)
         }
         if (battery <= 15)
             return (WAIT_FOR_MESSAGES_LIMIT);
+        message.clear();
     }
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
     DEBUG_PRINTF("Wi-Fi network: %s\n", ssid.c_str());

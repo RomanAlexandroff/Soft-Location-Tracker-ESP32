@@ -65,7 +65,6 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     }
     else if (text == ("/" + String(OTA_PASSWORD)) || text == ("/ota " + String(OTA_PASSWORD)))
     {
-                                                                      // keep the device working as long as possible while OTA
         bot.sendMessage(chat_id, "Password accepted", "");
         cycles = ft_ota_mode(chat_id);
         return (cycles);
