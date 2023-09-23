@@ -22,7 +22,7 @@ String  ft_write_report_message(void)
     String  message;
 
     if (!SPIFFS.exists("/offline_tracking_list.txt"))
-        message = "";
+        message = " ";
     else
     {
         message = "\n\nBetween this and the previous report I was taken to " + String(g_offline_wakeups);   
