@@ -54,7 +54,7 @@ void  IRAM_ATTR ft_wifi_scan(void)
         input = "\n   Location number " + String(g_offline_wakeups) + ":\n";
         while (i < quantity)
         {
-            input += WiFi.SSID(i) + "\n";
+            input += String(WiFi.SSID(i)) + "\n";
             i++;
         }
         ft_write_spiffs_file("/offline_tracking_list.txt", input);
