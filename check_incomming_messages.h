@@ -40,16 +40,6 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         bot.sendMessage(chat_id, message, "Markdown");
         return (cycles);
     }
-    else if (text == "/recorder report")
-    {
-        esp_task_wdt_reset();
-        cycles = 0;
-        if (SPIFFS.exists("/offline_tracking_list.txt"))
-            bot.sendMessage(CHAT_ID, ft_write_report_message(), "");
-        else
-            bot.sendMessage(CHAT_ID, "My list of unknown Wi-Fi networks is currently empty", "");
-        return (cycles);
-    }
     else if (text == "/location")
     {
         cycles = 0;
@@ -87,7 +77,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     {
         cycles = 0;
         bot.sendMessage(chat_id, "I'm sorry, I don't understand", "");
-        bot.sendMessage(chat_id, "Try one of the following commands: status, location, recorder report, ota, reboot, off. Every command should start with \"/\" sign", "");
+        bot.sendMessage(chat_id, "Try one of the following commands: status, location, ota, reboot, off. Every command should start with \"/\" sign", "");
         return (cycles);
     }
     return (cycles);

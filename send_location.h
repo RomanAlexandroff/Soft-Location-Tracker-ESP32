@@ -92,13 +92,15 @@ void  IRAM_ATTR ft_send_location(void)
         g_last_wifi = 13;
         message = MESSAGE13;
     }
-    if (send_tracking_list)
-    {
-        message += ft_write_report_message();
-        ft_delete_spiffs_file("/offline_tracking_list.txt");
-    }
     if (message)
         bot.sendMessage(CHAT_ID, message, "");
+    message.clear();
+    if (send_tracking_list)
+    {
+        message = ft_write_report_message();
+        ft_delete_spiffs_file("/offline_tracking_list.txt");
+        bot.sendMessage(CHAT_ID, message, "");
+    }
     esp_task_wdt_reset();
 }
  

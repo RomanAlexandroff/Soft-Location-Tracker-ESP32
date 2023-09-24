@@ -54,10 +54,7 @@ String  ft_read_spiffs_file(const char* file_name)
     else
     {
         while (file.available())
-        {
             output += file.readStringUntil('\n');
-            output += '\n';
-        }
         file.close(); 
     }
     return (output);
