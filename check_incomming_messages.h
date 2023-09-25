@@ -18,8 +18,9 @@
 
 short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
 {
-    short   cycles;
-    String  message;
+    short       cycles;
+    String      message;
+    static bool add_location_flag;
 
     esp_task_wdt_reset();
     #ifdef PRIVATE
@@ -32,8 +33,8 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     #endif 
     if (text == "/status")
     {
-        esp_task_wdt_reset();
         cycles = 0;
+        add_location_flag = false;
         message = "I am connected to " + String(WiFi.SSID());   
         message += ". Signal strength is " + String(WiFi.RSSI());
         message += " dBm. My battery is " + String(ft_battery_check()) + "% charged";
@@ -43,18 +44,42 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     else if (text == "/location")
     {
         cycles = 0;
+        add_location_flag = false;
         g_last_wifi = 0;
         ft_send_location();
+        return (cycles);
+    }
+    else if (text == "/list locations")
+    {
+        cycles = 0;
+        add_location_flag = false;
+        message = "Here are the locations I am keeping track of for you:\n\n";
+        message += ft_read_spiffs_file("/locations.txt");
+        bot.sendMessage(chat_id, message, "");
+        return (cycles);
+    }
+    else if (text == "/add location")
+    {
+        cycles = 0;
+        add_location_flag = true;
+        message = "You can add a new location for me to keep a track of and notify you about. ";
+        message += "To do so simply write me the Wi-Fi name, password and the location description in your next message. ";
+        message += "Also, please, separate the pieces of information with a comma. For example, your message could look like this:";
+        message += "\n\nCoffeeCafe Wi-Fi Free, LoveCoffee123, At Coffee Cafe in the city centre of Amsterdam, Netherlands";
+        message += "\n\nIf you don't want to add any locations just yet, simply write me any other command.";
+        bot.sendMessage(chat_id, message, "");
         return (cycles);
     }
     else if (text == "/ota")
     {
         cycles = 0;
+        add_location_flag = false;
         bot.sendMessage(chat_id, "The OTA mode is for wireless firmware update and accessable only by the developers. If you wish to continue, enter your Developer Password", "");
         return (cycles);
     }
     else if (text == ("/" + String(OTA_PASSWORD)) || text == ("/ota " + String(OTA_PASSWORD)))
     {
+        add_location_flag = false;
         bot.sendMessage(chat_id, "Password accepted", "");
         cycles = ft_ota_mode(chat_id);
         return (cycles);
@@ -62,7 +87,8 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     else if (text == "/reboot")
     {
         bot.sendMessage(chat_id, "Rebooting!", "");
-        g_for_this_long = 10;
+        g_for_this_long = 10000;
+        esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
         esp_sleep_enable_timer_wakeup(g_for_this_long);
         cycles = WAIT_FOR_MESSAGES_LIMIT;
         return (cycles);
@@ -76,8 +102,16 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     else
     {
         cycles = 0;
-        bot.sendMessage(chat_id, "I'm sorry, I don't understand", "");
-        bot.sendMessage(chat_id, "Try one of the following commands: status, location, ota, reboot, off. Every command should start with \"/\" sign", "");
+        if (add_location_flag)
+        {
+            ft_write_spiffs_file("/locations.txt", text);
+            
+        }
+        else
+        {
+            bot.sendMessage(chat_id, "I'm sorry, I don't understand", "");
+            bot.sendMessage(chat_id, "Try one of the following commands: status, location, list locations, add location, ota, reboot, off. Every command should start with \"/\" sign", "");
+        }
         return (cycles);
     }
     return (cycles);

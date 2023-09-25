@@ -50,7 +50,11 @@ String  ft_read_spiffs_file(const char* file_name)
         delay(100);
     }
     if (!file)
+    {
         DEBUG_PRINTS("Failed to open %s file for reading in SPIFFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", file_name, i, "", "");
+        output = "Unfortunatelly, the " + String(file_name) + " file was not found.";
+        file.close();
+    }  
     else
     {
         while (file.available())
@@ -91,6 +95,6 @@ void  IRAM_ATTR ft_spiffs_init(void)
         delay(100);
     }
     if (!SPIFFS.begin(true))
-        DEBUG_PRINTF("\nFailed to mount SPIFFS even after %d retries. Offline tracking function will be unavailable during this programm cycle.\n", i);
+        DEBUG_PRINTF("\nFailed to mount SPIFFS even after %d retries. Dependant functions will be unavailable during this programm cycle.\n", i);
 }
  
