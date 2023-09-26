@@ -13,8 +13,8 @@
 /*   binary file into its file system. The microcontroller opens a gate, accessable through       */
 /*   any web-browser via a link, that is provided by the microcontroller through both Serial      */
 /*   port and Telegram chat.                                                                      */
-/*   NOTE! The compiled firmware file should not exeed 50% of the microprocessor memory!          */
-/*   Otherwise the OTA update functionality may no longer be able to perform the update.          */
+/*   NOTE! When updating, the new software gets downloaded into the OTA memory partition first.   */
+/*   So, in Arduino IDE, choosing any "No OTA" partition scheme will block OTA functionality.     */
 /*                                                                                                */
 /* ********************************************************************************************** */
 
