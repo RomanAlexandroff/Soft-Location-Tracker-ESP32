@@ -149,13 +149,6 @@
       tried it and it didn't help. What did help a lot was increasing the CPU frequency to 160 Mhz.
       After this change only one remaining network still refuses to connect. I suspect that it
       runs on 5Ghz instead of native to ESPs 2.4Ghz. If it is true, there is nothing to do about it.
-  
-      I tried implementing SPIFFS file system in order to store all the data managed by the code 
-      in a single data.txt file. Unfortunatelly, implementation of this functionality occupied
-      so much memory space, that the OTA update was no longer able to work. The functionality
-      thus was discarted and RTC memory was used to store the data instead.
-
-
       
     
   ***********************************************************************************************    
