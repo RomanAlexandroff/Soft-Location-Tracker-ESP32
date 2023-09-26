@@ -119,9 +119,6 @@
       ft_new_messages() and ft_ota_mode() functions! It causes the Telegram bot messages queue
       to get stuck on the same last message!
 
-      IMPORTANT! Firmware file shall not to exeed 50% of the microprocessor memory. Otherwise 
-      the OTA update functionality may no longer be able to perform the update.
-
       UNSOLVED! If I write a command to the bot using reply function, it stops responding 
       to any commands at all. Other than that it continues properly working and continues reporting 
       its location to the chat. So far I was unable to fix the issue even by reflashing the firmware.
@@ -132,6 +129,9 @@
       the bot. Unfortunately, bot does not understand them in this format. To deactivate the "menu"
       go to the @BotFather bot, enter /mybots command, choose the bot, choose Edit bot, choose Edit
       Commands, enter /empty command. You need to remove bot.setMyCommands from the code first.
+
+      IMPORTANT! When updating via OTA, the new software gets downloaded into the OTA memory partition
+      first. So, in Arduino IDE, choosing any of "No OTA" partition schemes will block OTA functionality. 
 
       Triggering the OTA mode with an interrupt seems to be very unstable. Possibly, I could
       do that with battery charge level instead. When plugged in, ADC module outputs very 
@@ -145,7 +145,10 @@
       The device reliably fails to connect to certain Wi-Fi hotspots. I've already tried 
       increasing connectTimeoutMs up to 10000 — no positive effect. I assume, that the problem
       may be in the WiFi.persistent(false) function that forbids the device to save WiFi
-      configuration in flash. I have it turned "true" throughout the code now. Need to try it.
+      configuration in flash. I have it turned "true" throughout the code now. Need to try it out —
+      tried it and it didn't help. What did help a lot was increasing the CPU frequency to 160 Mhz.
+      After this change only one remaining network still refuses to connect. I suspect that it
+      runs on 5Ghz instead of native to ESPs 2.4Ghz. If it is true, there is nothing to do about it.
   
       I tried implementing SPIFFS file system in order to store all the data managed by the code 
       in a single data.txt file. Unfortunatelly, implementation of this functionality occupied
