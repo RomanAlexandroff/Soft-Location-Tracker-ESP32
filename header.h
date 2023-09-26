@@ -11,7 +11,6 @@
 /*                                                                                                */
 /*   This firmware allows User to track an approximate location of ESP-based devices via          */
 /*   Telegram chat notifications.                                                                 */
-/*   Important! Firmware file is not to exeed 50% of memory. Otherwise OTA unavailable.           */
 /*                                                                                                */
 /* ********************************************************************************************** */
 
@@ -34,6 +33,7 @@
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
+#define SOFTWARE_VERSION        1.04
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG

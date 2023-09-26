@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/18 08:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/25 09:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   These functions are for checking on new Telegram messages, reading them and reacting to      */
@@ -37,7 +37,8 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         add_location_flag = false;
         message = "I am connected to " + String(WiFi.SSID());   
         message += ". Signal strength is " + String(WiFi.RSSI());
-        message += " dBm. My battery is " + String(ft_battery_check()) + "% charged";
+        message += " dBm. My battery is " + String(ft_battery_check()) + "% charged, ";
+        message += "software version " + String(SOFTWARE_VERSION);
         bot.sendMessage(chat_id, message, "Markdown");
         return (cycles);
     }
@@ -104,8 +105,9 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         cycles = 0;
         if (add_location_flag)
         {
+            add_location_flag = false;
             ft_write_spiffs_file("/locations.txt", text);
-            
+            bot.sendMessage(chat_id, "I've added a new location for you. You can confirm it by calling the \"list locations\" command", "");
         }
         else
         {
