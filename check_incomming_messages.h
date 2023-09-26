@@ -54,8 +54,13 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     {
         cycles = 0;
         add_location_flag = false;
-        message = "Here are the locations I am keeping track of for you:\n\n";
-        message += ft_read_spiffs_file("/locations.txt");
+        if (!(ft_read_spiffs_file("/locations.txt")))
+            message = "You have no saved locations just yet. Add them by using the /add location command";
+        else
+        {
+            message = "Here are the locations I am keeping track of for you:\n\n";
+            message += ft_read_spiffs_file("/locations.txt");
+        }
         bot.sendMessage(chat_id, message, "");
         return (cycles);
     }
@@ -65,10 +70,34 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         add_location_flag = true;
         message = "You can add a new location for me to keep a track of and notify you about. ";
         message += "To do so simply write me the Wi-Fi name, password and the location description in your next message. ";
-        message += "Also, please, separate the pieces of information with a comma. For example, your message could look like this:";
-        message += "\n\nCoffeeCafe Wi-Fi Free, LoveCoffee123, At Coffee Cafe in the city centre of Amsterdam, Netherlands";
+        message += "Also, please, start the message with the \"/\" sign and separate the pieces of information with a comma. ";
+        message += "For example, your message could look like this:";
+        message += "\n\n/CoffeeCafe Wi-Fi Free, LoveCoffee123, At Coffee Cafe in the city centre of Amsterdam, Netherlands";
         message += "\n\nIf you don't want to add any locations just yet, simply write me any other command.";
         bot.sendMessage(chat_id, message, "");
+        return (cycles);
+    }
+    else if (text == "/delete all locations")
+    {
+        cycles = -32767;
+        message = "All of your saved locations are about to be errased from my memory. Before it happens, I will output them into this chat, ";
+        message += "so you could restore some of them in case you needed to. Here we go:";
+        bot.sendMessage(chat_id, message, "");
+        bot.sendMessage(chat_id, ft_read_spiffs_file("/locations.txt"), "");
+        ft_delete_spiffs_file("/locations.txt");
+        message.clear();
+        message = "Done! You have no saved locations!\n\nNow, before I turn off, you must add at least one location. ";
+        message += "Otherwise I would not be able to connect to any Wi-Fi and you or anyone else would not be able to use me! ";
+        message += "This cannot be done later.";
+        bot.sendMessage(chat_id, message, "");
+        message.clear();
+        message = "It can be any location. Your home Wi-Fi or your office Wi-Fi would do just fine. ";
+        message += "Simply write me the Wi-Fi name, password and the location description in your next message. ";
+        message += "Please, start the message with the \"/\" sign and separate the pieces of information with a comma. ";
+        message += "For example, your message could look like this:";
+        message += "\n\n/My_Home_WiFi, HomeSweetHome123, At home in Brusels, Belgium";
+        bot.sendMessage(chat_id, message, "");
+        add_location_flag = true;
         return (cycles);
     }
     else if (text == "/ota")
@@ -106,13 +135,15 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         if (add_location_flag)
         {
             add_location_flag = false;
-            ft_write_spiffs_file("/locations.txt", text);
+            message = text;
+            message.remove(0, 1);
+            ft_write_spiffs_file("/locations.txt", message);
             bot.sendMessage(chat_id, "I've added a new location for you. You can confirm it by calling the \"list locations\" command", "");
         }
         else
         {
             bot.sendMessage(chat_id, "I'm sorry, I don't understand", "");
-            bot.sendMessage(chat_id, "Try one of the following commands: status, location, list locations, add location, ota, reboot, off. Every command should start with \"/\" sign", "");
+            bot.sendMessage(chat_id, "Try one of the following commands: status, location, list locations, add location, delete all locations, ota, reboot, off. Every command should start with \"/\" sign", "");
         }
         return (cycles);
     }
