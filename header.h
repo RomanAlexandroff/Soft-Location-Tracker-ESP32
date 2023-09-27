@@ -33,7 +33,7 @@
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
-#define SOFTWARE_VERSION        1.04
+#define SOFTWARE_VERSION        1.05
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG
@@ -73,6 +73,7 @@ String  ft_read_spiffs_file(const char* file_name);
 void    ft_delete_spiffs_file(const char* file_name);
 void    IRAM_ATTR ft_spiffs_init(void);
 String  ft_write_report_message(void);
+void    ft_backup_connection(void);
 void    IRAM_ATTR ft_wifi_scan(void);
 void    IRAM_ATTR ft_wifi_list(void);
 void    IRAM_ATTR ft_send_location(void);

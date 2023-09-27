@@ -98,8 +98,8 @@ void  IRAM_ATTR ft_send_location(void)
     if (send_tracking_list)
     {
         message = ft_write_report_message();
-        ft_delete_spiffs_file("/offline_tracking_list.txt");
         bot.sendMessage(CHAT_ID, message, "");
+        ft_delete_spiffs_file("/offline_tracking_list.txt");
     }
     esp_task_wdt_reset();
 }
