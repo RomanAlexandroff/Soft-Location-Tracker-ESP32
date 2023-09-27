@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/27 13:48:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   List of known Wi-Fi networks in accordance with the ESP8266WiFiMulti library. More           */
@@ -21,15 +21,15 @@ void  ft_backup_connection(void)
 
     esp_task_wdt_reset();
     DEBUG_PRINTS("I will try to connect to the back-up networks, so you can examine the issue. Here is the list of my back-up networks:\n%s,\n%s,\n%s", String(SSID1), String(SSID3), String(SSID4), "");
-    wifiMulti.addAP(SSID1, PASSWORD1);
-    wifiMulti.addAP(SSID3, PASSWORD3);
-    wifiMulti.addAP(SSID4, PASSWORD4);
+    wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
+    wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
+    wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
         message = "I can't remember any locations due to a memory error, so I connected to my back-up Wi-Fi: " + String(WiFi.SSID());
         message += ". Tracking function is currently unavailable.\n\nSuch a memory error is not a common thing, but can be temporary. ";
         message += "So, here's the plan. Now I will turn myself off. If the next time I turn on you don't see this message again, ";
-        message += "everything is OK. But if you do, then you probably need to contact my creators.";
+        message += "everything is OK. But if you do, then you probably need to contact my creator.";
         bot.sendMessage(CHAT_ID, message, "");
     }
     else
