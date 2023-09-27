@@ -62,7 +62,9 @@
           - battery status notifications — low battery charge will not go unnoticed by Users, since
             the Tracker can ask them to charge it via Telegram chat;
           - user commands — Users can control some functionality of the Tracker by sending it commands
-            via Telegram chat;
+            via Telegram chat; e.g. add new locations to track right from the Telegram chat and it
+            will be stored in the microcontroller memory, your ESP32 will automatically use it next
+            time it wakes up — no hardcoding necessary;
           - OTA update — no need to take the Tracker out from wherever you put it to update it! Simply
             open the Telegram chat, command the Tracker to start updating and it will send you a link 
             to open with your web-browser and to drop a binary file with new firmware there.
@@ -161,17 +163,14 @@
 
       #define OTA_PASSWORD  1234
 
-      #define SSID1         "home_wifi_name"
-      #define PASSWORD1     "home_wifi_password"
-      #define MESSAGE1      "At home in London"
+      #define BACKUP_SSID1         "home_wifi_name"
+      #define BACKUP_PASSWORD1     "home_wifi_password"
     
-      #define SSID2         "university_wifi_name"
-      #define PASSWORD2     "university_wifi_password"
-      #define MESSAGE2      "At the university in Oxford"
+      #define BACKUP_SSID2         "office_wifi_name"
+      #define BACKUP_PASSWORD2     "office_wifi_password"
     
-      #define SSID3         "restaurant_wifi_name"
-      #define PASSWORD3     "restaurant_wifi_password"
-      #define MESSAGE3      "At the "Restaurant_name" restaurant"
+      #define BACKUP_SSID3         "friends_wifi_name"
+      #define BACKUP_PASSWORD3     "friends_wifi_password"
      
    
   ***********************************************************************************************
