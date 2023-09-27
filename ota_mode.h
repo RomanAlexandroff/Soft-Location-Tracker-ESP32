@@ -45,7 +45,10 @@ short  ft_ota_mode(String chat_id)
             i--;
         }
         if (battery <= 15)
+        {
+            bot.sendMessage(chat_id, "Unfortunately, my battery is way too low to wait any longer. I'm turning off.", "");
             return (WAIT_FOR_MESSAGES_LIMIT);
+        }
         message.clear();
     }
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
