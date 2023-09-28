@@ -93,9 +93,12 @@ void  IRAM_ATTR ft_wifi_list(void)
             wifiMulti.addAP(ssid, password);
         }
         file.close();
-        wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
-        wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
-        wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
+        if (!ssid)
+        {
+            wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
+            wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
+            wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
+        }
     }
     esp_task_wdt_reset();
 }
