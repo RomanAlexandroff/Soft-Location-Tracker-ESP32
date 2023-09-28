@@ -92,7 +92,10 @@ void  IRAM_ATTR ft_wifi_list(void)
             DEBUG_PRINTF("\nPassword: %s\n", password);
             wifiMulti.addAP(ssid, password);
         }
-        file.close(); 
+        file.close();
+        wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
+        wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
+        wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
     }
     esp_task_wdt_reset();
 }
