@@ -29,7 +29,7 @@ short  ft_ota_mode(String chat_id)
     esp_task_wdt_reset();
     ssid = WiFi.SSID();
     ip = WiFi.localIP();
-    i = WAIT_FOR_OTA_LIMIT;
+/*    i = WAIT_FOR_OTA_LIMIT;
     battery = ft_battery_check();
     if (battery <= 15)
     {
@@ -50,7 +50,7 @@ short  ft_ota_mode(String chat_id)
             return (WAIT_FOR_MESSAGES_LIMIT);
         }
         message.clear();
-    }
+    } */
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
     DEBUG_PRINTF("Wi-Fi network: %s\n", ssid.c_str());
     DEBUG_PRINTS("IP address: %d.%d.%d.%d\n\n", ip[0], ip[1], ip[2], ip[3]);
