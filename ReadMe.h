@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/15 08:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/09/29 08:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file contains only notes.                                                               */
@@ -117,9 +117,8 @@
 
           NOTES:
 
-      Do not call ft_go_to_sleep() function from ft_check_incomming_messages(), 
-      ft_new_messages() and ft_ota_mode() functions! It causes the Telegram bot messages queue
-      to get stuck on the same last message!
+      Do not call ft_go_to_sleep() function from any of these files: check_incomming_messages.h 
+      and ota_mode.h. It causes the Telegram bot messages queue to get stuck on the same last message.
 
       When updating via OTA, the new software gets downloaded into the OTA memory partition
       first. So, in Arduino IDE, choosing any of "No OTA" partition schemes will block OTA functionality. 
