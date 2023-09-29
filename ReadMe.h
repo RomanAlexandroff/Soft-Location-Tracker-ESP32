@@ -17,15 +17,6 @@
   
       This firmware allows Users to track an approximate location of ESP32-based devices via
       Telegram chat notifications.
-
-      This particular repository contains firmware for the ESP32 microprocessor/devboards.
-      How is it different from the ESP8266 / ESP8285 firmware?
-        - different set of libraries,
-        - different way to handle security certificate,
-        - different way to enable deep sleep,
-        - different way to store variables in RTC memory,
-        - different way to measure battery charge,
-        - different way to use watchdog.
       
       How it works:
       
@@ -92,10 +83,8 @@
       Future development:
 
       - make possible for Users to set the system messages language from Telegram chat;
-      - make possible for Users to add new Wi-Fi networks and custom messages for them from Telegram chat
-        and save them into EEPROM;
-      - add functionality to output the list of saved Wi-Fi networks when requested from Telegram chat;
-      - add functionality to delete individual saved Wi-Fi networks from the list from Telegram chat;
+      - add functionality to delete individual saved Wi-Fi networks from the list from Telegram chat
+        (right now it is only possible to delete the whole list);
       - make possible for Users to assign a name or an ID to individual Trackers from Telegram chat;
       - refactor unused functionality from the UniversalTelegramBot library to empty memory space.
       
@@ -110,6 +99,19 @@
       The OTA functionality added using AsyncElegantOTA as well as ESPAsyncWebServer libraries:
       https://github.com/ayushsharma82/AsyncElegantOTA
       https://github.com/me-no-dev/ESPAsyncWebServer
+
+
+      This particular repository contains firmware for the ESP32 microprocessors / devboards. The same
+      firmware for ESP8266 / ESP8285 can be found here:
+      https://github.com/RomanAlexandroff/Soft-Location-Tracker
+      How are they different?
+        - different set of libraries,
+        - different way to handle security certificate,
+        - different way to enable deep sleep,
+        - different way to store variables in RTC memory,
+        - different way to measure battery charge,
+        - different way to use watchdog,
+        - the ESP8266 / ESP8285 version does not support storring its data in SPIFFS files just yet.
 
 
   ***********************************************************************************************
