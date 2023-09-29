@@ -35,10 +35,10 @@ void  setup(void)
     ft_wifi_list();
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
-        if (g_power_loss_detector != 1110111)
-            ft_power_down_recovery();
+        ft_power_down_recovery();
         ft_send_location();
-        ft_check_incomming_messages(ft_battery_notification());
+        ft_battery_notification();
+        ft_check_incomming_messages(WAIT_FOR_MESSAGES_LIMIT);
     }
     else
     {

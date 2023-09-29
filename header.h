@@ -33,7 +33,7 @@
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
-#define SOFTWARE_VERSION        1.05
+#define SOFTWARE_VERSION        1.07
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG
@@ -51,7 +51,6 @@
 
 RTC_DATA_ATTR unsigned short  g_last_wifi;
 RTC_DATA_ATTR unsigned short  g_offline_wakeups;
-RTC_DATA_ATTR long            g_power_loss_detector;
 unsigned int                  g_for_this_long = SLEEP_DURATION;       // setting Deep Sleep default length
 
 WiFiMulti wifiMulti;
