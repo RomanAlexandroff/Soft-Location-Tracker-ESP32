@@ -119,6 +119,10 @@
 
           NOTES:
 
+      Having any problems? The solution may have been already found. Check the project's github
+      Issues page. And if not, you may ask your question there as well. Here is the direct link:
+      https://github.com/RomanAlexandroff/Soft-Location-Tracker-ESP32/issues
+      
       Do not call ft_go_to_sleep() function from any of these files: check_incomming_messages.h 
       and ota_mode.h. It causes the Telegram bot messages queue to get stuck on the same last message.
 
