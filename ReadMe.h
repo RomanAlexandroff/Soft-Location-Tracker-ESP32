@@ -86,7 +86,8 @@
       - add functionality to delete individual saved Wi-Fi networks from the list from Telegram chat
         (right now it is only possible to delete the whole list);
       - make possible for Users to assign a name or an ID to individual Trackers from Telegram chat;
-      - refactor unused functionality from the UniversalTelegramBot library to empty memory space.
+      - refactor unused functionality from the UniversalTelegramBot library to empty memory space;
+      - transfer to Elegant OTA V3 library.
       
 
       This sketch was firstly written as a "toy" for my Embedded Development group chat in
