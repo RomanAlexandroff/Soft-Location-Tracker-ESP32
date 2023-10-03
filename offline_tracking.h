@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/17 08:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/17 12:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   In case the device wakes up and cannot find any already known Wi-Fi networks, the code in    */
@@ -21,7 +21,7 @@ String  ft_write_report_message(void)
 {
     String  message;
 
-    if (!SPIFFS.exists("/offline_tracking_list.txt"))
+    if (!LittleFS.exists("/offline_tracking_list.txt"))
         message = " ";
     else
     {

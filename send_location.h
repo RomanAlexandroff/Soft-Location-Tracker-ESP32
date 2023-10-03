@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/17 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This function checks what Wi-Fi network the device is being connected to and sends an        */
@@ -22,7 +22,7 @@ void  IRAM_ATTR ft_send_location(void)
 
     esp_task_wdt_reset();
     send_tracking_list = false;
-    if ((g_last_wifi == 0) && SPIFFS.exists("/offline_tracking_list.txt"))
+    if ((g_last_wifi == 0) && LittleFS.exists("/offline_tracking_list.txt"))
         send_tracking_list = true;
     ssid = WiFi.SSID();
     DEBUG_PRINTF("WiFi connected to %s\n", ssid.c_str());

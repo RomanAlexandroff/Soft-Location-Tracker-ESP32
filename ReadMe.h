@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/29 08:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file contains only notes.                                                               */
@@ -98,9 +98,8 @@
       https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
 
       The OTA functionality added using AsyncElegantOTA as well as ESPAsyncWebServer libraries:
-      https://github.com/ayushsharma82/AsyncElegantOTA
+      https://github.com/ayushsharma82/ElegantOTA
       https://github.com/me-no-dev/ESPAsyncWebServer
-
 
       This particular repository contains firmware for the ESP32 microprocessors / devboards. The same
       firmware for ESP8266 / ESP8285 can be found here:
@@ -112,7 +111,7 @@
         - different way to store variables in RTC memory,
         - different way to measure battery charge,
         - different way to use watchdog,
-        - the ESP8266 / ESP8285 version does not support storring its data in SPIFFS files just yet.
+        - the ESP8266 / ESP8285 version does not support storring its data in LittleFS files just yet.
 
 
   ***********************************************************************************************

@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/10 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This file allowes to update the microntroller wirelessly, simply by sending a compiled       */
@@ -23,8 +23,8 @@ short  ft_ota_mode(String chat_id)
     String      ssid;
     IPAddress   ip;
     String      message;
-    short       battery;
-    int         i;
+//    short       battery;
+//    int         i;
 
     esp_task_wdt_reset();
     ssid = WiFi.SSID();
@@ -55,7 +55,8 @@ short  ft_ota_mode(String chat_id)
     DEBUG_PRINTF("Wi-Fi network: %s\n", ssid.c_str());
     DEBUG_PRINTS("IP address: %d.%d.%d.%d\n\n", ip[0], ip[1], ip[2], ip[3]);
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) { request->send(200, "text/plain", "Soft Tracker OTA update."); });        //Starting the OTA server
-    AsyncElegantOTA.begin(&server);
+    ElegantOTA.begin(&server);
+//    AsyncElegantOTA.begin(&server);
     server.begin();
     DEBUG_PRINTF("HTTP server started.\nConnect to the stated Wi-Fi network and proceed to the link\n\n", "");
     DEBUG_PRINTS("http://%d.%d.%d.%d/update\n\n\n", ip[0], ip[1], ip[2], ip[3]);

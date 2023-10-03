@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/17 14:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This firmware allows User to track an approximate location of ESP-based devices via          */
@@ -24,16 +24,17 @@
 #include <stdio.h>
 #include <AsyncTCP.h>                                                 // OTA
 #include <ESPAsyncWebServer.h>                                        // OTA
-#include <AsyncElegantOTA.h>
+//#include <AsyncElegantOTA.h>
+#include <ElegantOTA.h>
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>                                              // Telegram
-#include <SPIFFS.h>
+#include "LittleFS.h"
 #include <driver/adc.h>
 #include "esp_adc_cal.h"
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
-#define SOFTWARE_VERSION        1.07
+#define SOFTWARE_VERSION        2.01
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG

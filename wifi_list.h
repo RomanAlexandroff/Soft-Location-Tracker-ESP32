@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/27 13:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   List of known Wi-Fi networks in accordance with the ESP8266WiFiMulti library. More           */
@@ -48,17 +48,17 @@ void  IRAM_ATTR ft_wifi_list(void)
 
     i = 1;
     DEBUG_PRINTF("\n\nInitializing Wi-Fi networks credentials.", "");
-    File file = SPIFFS.open("/locations.txt", "r");
+    File file = LittleFS.open("/locations.txt", "r");
     while (!file && i <= 5)
     {
-        DEBUG_PRINTF("An error occurred while opening locations.txt file for reading in SPIFFS. Retry #%d.\n", i);
-        File file = SPIFFS.open("/locations.txt", "r");
+        DEBUG_PRINTF("An error occurred while opening locations.txt file for reading in LittleFS. Retry #%d.\n", i);
+        File file = LittleFS.open("/locations.txt", "r");
         i++;
         delay(100);
     }
     if (!file)
     {
-        DEBUG_PRINTF("Failed to open locations.txt file for reading in SPIFFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", i);
+        DEBUG_PRINTF("Failed to open locations.txt file for reading in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", i);
         file.close();
         ft_backup_connection();
     }  
@@ -93,13 +93,10 @@ void  IRAM_ATTR ft_wifi_list(void)
             wifiMulti.addAP(ssid, password);
         }
         file.close();
-        if (!ssid)
-        {
-            wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
-            wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
-            wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
-        }
     }
+    wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
+    wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
+    wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
     esp_task_wdt_reset();
 }
  
