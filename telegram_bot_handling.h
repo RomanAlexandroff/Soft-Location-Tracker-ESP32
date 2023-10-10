@@ -1,7 +1,7 @@
 /* ********************************************************************************************** */
 /*                                                                                                */
 /*   Soft  Tracker  Project  ESP32-C3                                  :::::::::        :::       */
-/*   check_incomming_messages.h                                       :+:    :+:     :+: :+:      */
+/*   telegram_bot_handling.h                                          :+:    :+:     :+: :+:      */
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
@@ -10,7 +10,7 @@
 /*                                                                                                */
 /*                                                                                                */
 /*   These functions are for checking on new Telegram messages, reading them and reacting to      */
-/*   them accordingly.                                                                            */
+/*   them accordingly. Waiting for new messages also serves as a loop for the OTA functions.      */
 /*   WARNING! DO NOT CALL THE ft_go_to_sleep() FUNCTION FROM ANY OF THESE FUNCTIONS! THE DEVICE   */
 /*   WOULD BECOME UNRESPONSIVE TO ANY MESSAGES FROM THE TELEGRAM CHAT!                            */
 /*                                                                                                */
@@ -151,7 +151,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     return (cycles);
 }
 
-short ft_new_messages(short numNewMessages)                                       // function to handle what happens when you receive new messages
+short ft_new_messages(short numNewMessages)
 {
     short   cycles;
     String  chat_id;
@@ -193,6 +193,7 @@ void  ft_check_incomming_messages(short cycles)
             bot.sendMessage(CHAT_ID, "It seems that I'm not currently needed. I'll wait for 1 more minute just in case and then go to sleep. To keep me awake, write me anything.", "");
         if (cycles < 0)
             ElegantOTA.loop();
+//        ft_bluetooth_serial_loop();
         cycles++;
     }
 }

@@ -21,14 +21,15 @@ void  setup(void)
 {
     #ifdef DEBUG
         Serial.begin(115200);
+//        ft_bluetooth_serial_init();
+        DEBUG_PRINTF("\n\n\nDEVICE START\n\n", "");
     #endif
-    DEBUG_PRINTF("\n\n\nDEVICE START\n\n", "");
     adc1_config_width(ADC_WIDTH_12Bit);
     adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_11db);
     esp_sleep_enable_timer_wakeup(g_for_this_long);
-    esp_task_wdt_init(WD_TIMEOUT, true);                                      // watchdog
+    esp_task_wdt_init(WD_TIMEOUT, true);
     ft_spiffs_init();
-    WiFi.persistent(true);                                                    // Save WiFi configuration in flash - optional
+    WiFi.persistent(true);
     WiFi.mode(WIFI_STA);
     WiFi.hostname("SoftTraker");
     client.setCACert(TELEGRAM_CERTIFICATE_ROOT);
