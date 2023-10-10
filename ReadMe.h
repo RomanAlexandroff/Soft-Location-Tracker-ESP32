@@ -142,7 +142,7 @@
       #define BOTtoken      "xxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"     // Telegram Bot Token
       #define CHAT_ID       "-xxxxxxxxxxxxx"                                     // Telegram chat ID
 
-      #define OTA_PASSWORD  1234
+      #define OTA_PASSWORD  "1234"
 
       #define BACKUP_SSID1         "home_wifi_name"
       #define BACKUP_PASSWORD1     "home_wifi_password"
