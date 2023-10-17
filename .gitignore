@@ -11,6 +11,9 @@ esp32c3.svd
 debug.cfg
 debug_custom.json
 
+# macOS system files
+.DS_Store
+
 # Prerequisites
 *.d
 
