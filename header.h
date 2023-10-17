@@ -31,11 +31,10 @@
 //#include <SoftwareSerial.h>
 #include "LittleFS.h"
 #include <driver/adc.h>
-#include "esp_adc_cal.h"
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
-#define SOFTWARE_VERSION        2.03
+#define SOFTWARE_VERSION        2.05
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG
