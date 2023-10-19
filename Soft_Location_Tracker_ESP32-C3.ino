@@ -21,7 +21,6 @@ void  setup(void)
 {
     #ifdef DEBUG
         Serial.begin(115200);
-//        ft_bluetooth_serial_init();
         DEBUG_PRINTF("\n\n\nDEVICE START\n\n", "");
     #endif
     adc1_config_width(ADC_WIDTH_12Bit);
@@ -39,6 +38,7 @@ void  setup(void)
         ft_power_down_recovery();
         ft_send_location();
         ft_battery_notification();
+        esp_task_wdt_reset();
         ft_check_incomming_messages(WAIT_FOR_MESSAGES_LIMIT);
     }
     else

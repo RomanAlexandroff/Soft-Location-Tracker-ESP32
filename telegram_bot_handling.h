@@ -6,7 +6,7 @@
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/10/19 18:09:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   These functions are for checking on new Telegram messages, reading them and reacting to      */
@@ -111,8 +111,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     {
         add_location_flag = false;
         bot.sendMessage(chat_id, "Password accepted", "");
-        ft_ota_mode(chat_id);
-        cycles = 0;
+        cycles = ft_ota_mode(chat_id);
         return (cycles);
     }
     else if (text == "/reboot")
@@ -181,7 +180,7 @@ void  ft_check_incomming_messages(short cycles)
 
     while (cycles <= WAIT_FOR_MESSAGES_LIMIT)                                       // waiting for new messages
     {
-        esp_task_wdt_reset();
+        ElegantOTA.loop();
         DEBUG_PRINTF("Waiting for incomming commands from Telegram chat. Waiting loop cycles: %d\n", cycles);       
         numNewMessages = bot.getUpdates(bot.last_message_received + 1);             // check how many new messages in queue
         while (numNewMessages)
@@ -191,9 +190,6 @@ void  ft_check_incomming_messages(short cycles)
         }
         if ((cycles + 25) == WAIT_FOR_MESSAGES_LIMIT)
             bot.sendMessage(CHAT_ID, "It seems that I'm not currently needed. I'll wait for 1 more minute just in case and then go to sleep. To keep me awake, write me anything.", "");
-        if (cycles < 0)
-            ElegantOTA.loop();
-//        ft_bluetooth_serial_loop();
         cycles++;
     }
 }

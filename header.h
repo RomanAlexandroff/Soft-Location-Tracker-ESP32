@@ -27,14 +27,12 @@
 #include <ElegantOTA.h>
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>                                              // Telegram
-//#include "BLESerial.h"
-//#include <SoftwareSerial.h>
 #include "LittleFS.h"
 #include <driver/adc.h>
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
-#define SOFTWARE_VERSION        2.05
+#define SOFTWARE_VERSION        2.06
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG
@@ -53,11 +51,7 @@
 RTC_DATA_ATTR unsigned short  g_last_wifi;
 RTC_DATA_ATTR unsigned short  g_offline_wakeups;
 unsigned int                  g_for_this_long = SLEEP_DURATION;       // setting Deep Sleep default length
-uint8_t                       address[6] = BT_COMPUTER_MAC;
-String                        name = BT_COMPUTER_NAME;
-const char*                   password = OTA_PASSWORD;
 
-//BLESerial ble(10, 11);
 WiFiMulti wifiMulti;
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
@@ -68,12 +62,10 @@ AsyncWebServer server(80);
 #include "ota_mode.h"
 #include "offline_tracking.h"
 #include "send_location.h"
-//#include "bluetooth_handling.h"
 #include "telegram_bot_handling.h"
 #include "power_down_recovery.h"
 #include "wifi_list.h"
 
-//inline void ft_bluetooth_serial_init(void);
 void        ft_write_spiffs_file(const char* file_name, String input);
 String      ft_read_spiffs_file(const char* file_name);
 void        ft_delete_spiffs_file(const char* file_name);
@@ -87,6 +79,9 @@ void        ft_check_incomming_messages(short cycles);
 short       ft_new_messages(int numNewMessages);
 short       IRAM_ATTR ft_answer_engine(String chat_id, String text);
 void        ft_power_down_recovery(void);
+inline void ft_compose_message(String ssid, IPAddress ip, String chat_id);
+inline void ft_ElegantOTA_callbacks(String chat_id);
+short       ft_confirm_battery_charge(String chat_id);
 short       ft_ota_mode(String chat_id);
 short       ft_battery_notification(void);
 short       ft_battery_check(void);

@@ -47,7 +47,7 @@ void  IRAM_ATTR ft_wifi_list(void)
     char        password[128];
 
     i = 1;
-    DEBUG_PRINTF("\n\nInitializing Wi-Fi networks credentials.", "");
+    DEBUG_PRINTF("\n\nInitializing Wi-Fi networks credentials.\n", "");
     File file = LittleFS.open("/locations.txt", "r");
     while (!file && i <= 5)
     {

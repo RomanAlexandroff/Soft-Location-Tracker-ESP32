@@ -31,10 +31,10 @@ short  ft_battery_check(void)
     i = 4;
     while (i)
     {
-        battery += ceil((adc1_get_raw(ADC1_CHANNEL_0) - 650) / 12.62);                  // see ReadMe regarding these constants
+        battery += ceil((adc1_get_raw(ADC1_CHANNEL_0) - 650) / 12.62);            // see ReadMe regarding these constants
         i--;
     }
-    battery = battery / 4;                                                             // counting average of 4 samples
+    battery = battery / 4;                                                        // counting average of 4 samples
     if (battery <= 0)
         battery = 0;
     if (battery >= 100)
