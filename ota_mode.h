@@ -18,24 +18,23 @@
 /*                                                                                                */
 /* ********************************************************************************************** */
 
+short ft_ota_mode(String chat_id);
+void  ft_check_incomming_messages(short cycles);
+
 inline void ft_compose_message(String ssid, IPAddress ip, String chat_id)
 {
     String  message;
 
     message = "OTA mode activated. \n\nConnected to\n" + String(ssid);
-    message += "\nAssigned IP\n" + String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]);
-    message += "\n\nConnect to the stated Wi-Fi network and go to the link\nhttp://";
+    message += "\n\nConnect to this Wi-Fi and go to the link\nhttp://";
     message += String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]) + "/update";
-    message += "\n\nRemember that in OTA mode I will not go to sleep automatically.";
-    message += " To cancel the OTA mode without firmware update use \"off\" or \"reboot\" commands";
+    message += "\n\nTo cancel the OTA update write any other command.";
     bot.sendMessage(chat_id, message, "");
 }
-
 
 inline void ft_ElegantOTA_callbacks(String chat_id)
 {
     ElegantOTA.onStart([chat_id]() {
-        esp_task_wdt_reset();
         DEBUG_PRINTF("\nOTA update process started.\n", "");
         bot.sendMessage(chat_id, "Receiving new firmware...", "");
     });
@@ -49,39 +48,11 @@ inline void ft_ElegantOTA_callbacks(String chat_id)
         {
             DEBUG_PRINTF("OTA update failed.", "");
             bot.sendMessage(chat_id, "Oups! Something went wrong and OTA update was not completed", "");
+            delay(1000);
+            bot.sendMessage(chat_id, "Let's try again", "");
+            ft_check_incomming_messages(ft_ota_mode(CHAT_ID));
         }
     });
-}
-
-
-short  ft_confirm_battery_charge(String chat_id)
-{
-    String      message;
-    short       battery;
-    int         i;
-
-    i = WAIT_FOR_OTA_LIMIT;
-    battery = ft_battery_check();
-    if (battery < 9)
-    {
-        DEBUG_PRINTF("\nThe battery is too low to perform an OTA update safely. Connect a charging cable to proceed.\n", "");
-        message = "The battery is too low to perform an OTA update safely. ";
-        message += "Connect a charging cable to proceed. I will wait as long as I can.";
-        bot.sendMessage(chat_id, message, "");
-        while (battery > 3 && battery < 9 && i)
-        {
-            battery = ft_battery_check();
-            esp_task_wdt_reset();
-            delay (999);
-            i--;
-        }
-        if (battery < 3)
-        {
-            bot.sendMessage(chat_id, "Unfortunately, my battery is way too low to wait any longer. I'm turning off.", "");
-            return (0);
-        }
-    }
-    return (1);
 }
 
 short  ft_ota_mode(String chat_id) 
@@ -90,8 +61,6 @@ short  ft_ota_mode(String chat_id)
     IPAddress   ip;
 
     esp_task_wdt_reset();
-//    if (!ft_confirm_battery_charge(chat_id))
-//        return (WAIT_FOR_MESSAGES_LIMIT);
     ssid = WiFi.SSID();
     ip = WiFi.localIP();
     DEBUG_PRINTF("\n\nSOFT TRACKER\nOTA update mode initialized.\n\n", "");
@@ -104,7 +73,6 @@ short  ft_ota_mode(String chat_id)
     DEBUG_PRINTF("HTTP server started.\nConnect to the stated Wi-Fi network and proceed to the link\n\n", "");
     DEBUG_PRINTS("http://%d.%d.%d.%d/update\n\n\n", ip[0], ip[1], ip[2], ip[3]);
     ft_compose_message(ssid, ip, chat_id);
-    esp_task_wdt_reset();
     return (-32767);
 }
  
