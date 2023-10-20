@@ -20,16 +20,14 @@ void  ft_backup_connection(void)
     String      message;
 
     esp_task_wdt_reset();
-    DEBUG_PRINTS("I will try to connect to the back-up networks, so you can examine the issue. Here is the list of my back-up networks:\n%s,\n%s,\n%s", String(SSID1), String(SSID3), String(SSID4), "");
+    DEBUG_PRINTF("I will try to connect to the back-up networks, so you can examine the issue. ", "");
+    DEBUG_PRINTS("Here is the list of my back-up networks:\n%s,\n%s,\n%s", String(BACKUP_SSID1), String(BACKUP_SSID2), String(BACKUP_SSID3), "");
     wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
     wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
     wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
     if (wifiMulti.run(CONNECT_TIMEOUT) == WL_CONNECTED) 
     {
-        message = "I can't remember any locations due to a memory error, so I connected to my back-up Wi-Fi: " + String(WiFi.SSID());
-        message += ". Tracking function is currently unavailable.\n\nSuch a memory error is not a common thing, but can be temporary. ";
-        message += "So, here's the plan. Now I will turn myself off. If the next time I turn on you don't see this message again, ";
-        message += "everything is OK. But if you do, then you probably need to contact my creator.";
+        message = "My locations list is empty, so I connected to my back-up Wi-Fi: " + String(WiFi.SSID());
         bot.sendMessage(CHAT_ID, message, "");
     }
     else
@@ -47,9 +45,10 @@ void  IRAM_ATTR ft_wifi_list(void)
     char        password[128];
 
     i = 1;
+    esp_task_wdt_reset();
     DEBUG_PRINTF("\n\nInitializing Wi-Fi networks credentials.\n", "");
     File file = LittleFS.open("/locations.txt", "r");
-    while (!file && i <= 5)
+    while (!file && i <= 2)
     {
         DEBUG_PRINTF("An error occurred while opening locations.txt file for reading in LittleFS. Retry #%d.\n", i);
         File file = LittleFS.open("/locations.txt", "r");
@@ -58,7 +57,7 @@ void  IRAM_ATTR ft_wifi_list(void)
     }
     if (!file)
     {
-        DEBUG_PRINTF("Failed to open locations.txt file for reading in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", i);
+        DEBUG_PRINTF("Failed to open locations.txt file for reading in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", (i - 1));
         file.close();
         ft_backup_connection();
     }  

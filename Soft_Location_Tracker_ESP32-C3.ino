@@ -38,7 +38,6 @@ void  setup(void)
         ft_power_down_recovery();
         ft_send_location();
         ft_battery_notification();
-        esp_task_wdt_reset();
         ft_check_incomming_messages(WAIT_FOR_MESSAGES_LIMIT);
     }
     else

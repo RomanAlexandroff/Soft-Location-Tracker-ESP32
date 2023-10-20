@@ -28,11 +28,12 @@
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>                                              // Telegram
 #include "LittleFS.h"
+#include <esp_system.h>
 #include <driver/adc.h>
 #include <esp_task_wdt.h>
 #include "credentials.h"
 
-#define SOFTWARE_VERSION        2.06
+#define SOFTWARE_VERSION        2.11
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG
@@ -43,13 +44,13 @@
   #define DEBUG_PRINTS(q, w, e, r, t)
 #endif
 #define WD_TIMEOUT              8000                                  // watchdog, in milliseconds (5000 == 5 seconds; 8500 — system max val)
-#define CONNECT_TIMEOUT         5000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
-#define WAIT_FOR_OTA_LIMIT      60                                    // in seconds
+#define CONNECT_TIMEOUT         3000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
 #define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == 2 seconds (80 == 160 seconds == 2,5 minutes)
 #define SLEEP_DURATION          3600000000ULL                         // in microseconds (60000000 == 1 minute; 3600000000 == 1 hour)
 
 RTC_DATA_ATTR unsigned short  g_last_wifi;
 RTC_DATA_ATTR unsigned short  g_offline_wakeups;
+RTC_DATA_ATTR bool            g_reboot;
 unsigned int                  g_for_this_long = SLEEP_DURATION;       // setting Deep Sleep default length
 
 WiFiMulti wifiMulti;

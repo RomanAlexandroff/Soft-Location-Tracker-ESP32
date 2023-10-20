@@ -26,7 +26,6 @@ void  IRAM_ATTR ft_send_location(void)
         send_tracking_list = true;
     ssid = WiFi.SSID();
     DEBUG_PRINTF("WiFi connected to %s\n", ssid.c_str());
-//    DEBUG_PRINTF("Signal strength is %i dBm\n\n", WiFi.RSSI());
     if ((ssid == SSID1) && (g_last_wifi != 1)) 
     {
         g_last_wifi = 1;
