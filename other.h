@@ -17,6 +17,8 @@
 void  ft_go_to_sleep(void)
 {
     esp_task_wdt_reset();
+    if (g_reboot)
+        esp_restart();
     DEBUG_PRINTF("\nGoing to sleep for %d minute(s)\n", (g_for_this_long / 60000000));
     DEBUG_PRINTF("The device was running for %d second(s) this time\n", (millis() / 1000));
     DEBUG_PRINTF("\nDEVICE STOP\n\n\n", "");

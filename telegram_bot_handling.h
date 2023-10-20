@@ -58,7 +58,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
             message = "You have no saved locations just yet. Add them by using the /add location command";
         else
         {
-            message = "Here are the locations I am keeping track of for you:\n\n";
+            message = "Here are the locations I am keeping track of:\n\n";
             message += ft_read_spiffs_file("/locations.txt");
         }
         bot.sendMessage(chat_id, message, "");
@@ -77,7 +77,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         bot.sendMessage(chat_id, message, "");
         return (cycles);
     }
-    else if (text == "/delete all locations")
+    else if (text == "/delete locations")
     {
         cycles = -32767;
         message = "All of your saved locations are about to be errased from my memory. Before it happens, I will output them into this chat, ";
@@ -95,7 +95,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         message += "Simply write me the Wi-Fi name, password and the location description in your next message. ";
         message += "Please, start the message with the \"/\" sign and separate the pieces of information with a comma. ";
         message += "For example, your message could look like this:";
-        message += "\n\n/My_Home_WiFi, HomeSweetHome123, At home in Brusels, Belgium";
+        message += "\n\n/My_Home_WiFi, HomeSweetHome123, At home in Brussels, Belgium";
         bot.sendMessage(chat_id, message, "");
         add_location_flag = true;
         return (cycles);
@@ -104,22 +104,20 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     {
         cycles = 0;
         add_location_flag = false;
-        bot.sendMessage(chat_id, "The OTA mode is for wireless firmware update and accessable only by the developers. If you wish to continue, enter your Developer Password", "");
+        bot.sendMessage(chat_id, "To activate OTA Firmware Update enter your Developer Password", "");
         return (cycles);
     }
     else if (text == ("/" + String(OTA_PASSWORD)) || text == ("/ota " + String(OTA_PASSWORD)))
     {
         add_location_flag = false;
-        bot.sendMessage(chat_id, "Password accepted", "");
+        bot.sendMessage(chat_id, "Password accepted.", "");
         cycles = ft_ota_mode(chat_id);
         return (cycles);
     }
     else if (text == "/reboot")
     {
         bot.sendMessage(chat_id, "Rebooting!", "");
-        g_for_this_long = 10000;
-        esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
-        esp_sleep_enable_timer_wakeup(g_for_this_long);
+        g_reboot = true;
         cycles = WAIT_FOR_MESSAGES_LIMIT;
         return (cycles);
     }
@@ -143,7 +141,7 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         else
         {
             bot.sendMessage(chat_id, "I'm sorry, I don't understand", "");
-            bot.sendMessage(chat_id, "Try one of the following commands: status, location, list locations, add location, delete all locations, ota, reboot, off. Every command should start with \"/\" sign", "");
+            bot.sendMessage(chat_id, "Try one of the following commands: status, location, list locations, add location, delete locations, ota, reboot, off. Every command should start with \"/\" sign", "");
         }
         return (cycles);
     }
@@ -178,18 +176,21 @@ void  ft_check_incomming_messages(short cycles)
 {
     short numNewMessages;
 
-    while (cycles <= WAIT_FOR_MESSAGES_LIMIT)                                       // waiting for new messages
+    esp_task_wdt_reset();
+    while (cycles <= WAIT_FOR_MESSAGES_LIMIT)
     {
         ElegantOTA.loop();
         DEBUG_PRINTF("Waiting for incomming commands from Telegram chat. Waiting loop cycles: %d\n", cycles);       
-        numNewMessages = bot.getUpdates(bot.last_message_received + 1);             // check how many new messages in queue
+        numNewMessages = bot.getUpdates(bot.last_message_received + 1);
         while (numNewMessages)
         {
             cycles = ft_new_messages(numNewMessages);
             numNewMessages = bot.getUpdates(bot.last_message_received + 1);
         }
         if ((cycles + 25) == WAIT_FOR_MESSAGES_LIMIT)
-            bot.sendMessage(CHAT_ID, "It seems that I'm not currently needed. I'll wait for 1 more minute just in case and then go to sleep. To keep me awake, write me anything.", "");
+            bot.sendMessage(CHAT_ID, "Going to sleep in 1 minute. To keep me awake, write me anything", "");
+        if ((cycles + 1) == WAIT_FOR_MESSAGES_LIMIT)
+            bot.sendMessage(CHAT_ID, "Good talk! I'm off now", "");
         cycles++;
     }
 }
