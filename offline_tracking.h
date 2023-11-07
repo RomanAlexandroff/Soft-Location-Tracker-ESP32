@@ -30,6 +30,7 @@ String  ft_write_report_message(void)
         message += "but I made you a list of Wi-Fi neworks I saw on the way. ";
         message += "By googling their names you may discover the route I traveled.\n";
         message += ft_read_spiffs_file("/offline_tracking_list.txt");
+        g_offline_wakeups = 0;
     }
     return (message);
 }
