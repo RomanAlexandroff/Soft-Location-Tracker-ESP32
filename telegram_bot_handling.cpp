@@ -1,12 +1,12 @@
 /* ********************************************************************************************** */
 /*                                                                                                */
 /*   Soft  Tracker  Project  ESP32-C3                                  :::::::::        :::       */
-/*   telegram_bot_handling.h                                          :+:    :+:     :+: :+:      */
+/*   telegram_bot_handling.cpp                                        :+:    :+:     :+: :+:      */
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/10/19 18:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/11/12 11:40:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   These functions are for checking on new Telegram messages, reading them and reacting to      */
@@ -15,6 +15,8 @@
 /*   WOULD BECOME UNRESPONSIVE TO ANY MESSAGES FROM THE TELEGRAM CHAT!                            */
 /*                                                                                                */
 /* ********************************************************************************************** */
+
+#include "header.h"
 
 short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
 {

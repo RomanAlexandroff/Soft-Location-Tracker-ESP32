@@ -1,12 +1,12 @@
 /* ********************************************************************************************** */
 /*                                                                                                */
 /*   Soft  Tracker  Project  ESP32-C3                                  :::::::::        :::       */
-/*   wifi_list.h                                                      :+:    :+:     :+: :+:      */
+/*   wifi_list.cpp                                                    :+:    :+:     :+: :+:      */
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/11/12 11:40:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   List of known Wi-Fi networks in accordance with the ESP8266WiFiMulti library. More           */
@@ -14,6 +14,8 @@
 /*   list must be called before the wifiMulti.run() function, which initiates connection.         */
 /*                                                                                                */
 /* ********************************************************************************************** */
+
+#include "header.h"
 
 void  ft_backup_connection(void)
 {

@@ -1,12 +1,12 @@
 /* ********************************************************************************************** */
 /*                                                                                                */
 /*   Soft  Tracker  Project  ESP32-C3                                  :::::::::        :::       */
-/*   offline_tracking.h                                               :+:    :+:     :+: :+:      */
+/*   offline_tracking.cpp                                             :+:    :+:     :+: :+:      */
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/17 08:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/11/12 11:40:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   In case the device wakes up and cannot find any already known Wi-Fi networks, the code in    */
@@ -16,6 +16,8 @@
 /*   the device "saw" between the last two successfull connections.                               */
 /*                                                                                                */
 /* ********************************************************************************************** */
+
+#include "header.h"
 
 String  ft_write_report_message(void)
 {

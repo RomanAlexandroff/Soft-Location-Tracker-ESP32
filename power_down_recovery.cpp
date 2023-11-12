@@ -1,18 +1,20 @@
 /* ********************************************************************************************** */
 /*                                                                                                */
 /*   Soft  Tracker  Project  ESP32-C3                                  :::::::::        :::       */
-/*   power_down_recovery.h                                            :+:    :+:     :+: :+:      */
+/*   power_down_recovery.cpp                                          :+:    :+:     :+: :+:      */
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/09/20 18:48:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/11/12 11:40:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This function shows welcome message after the device turned on and resets the RTC            */
 /*   variables values.                                                                            */
 /*                                                                                                */
 /* ********************************************************************************************** */
+
+#include "header.h"
 
 void  ft_power_down_recovery(void)
 {

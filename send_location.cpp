@@ -1,18 +1,20 @@
 /* ********************************************************************************************** */
 /*                                                                                                */
 /*   Soft  Tracker  Project  ESP32-C3                                  :::::::::        :::       */
-/*   send_location.h                                                  :+:    :+:     :+: :+:      */
+/*   send_location.cpp                                                :+:    :+:     :+: :+:      */
 /*                                                                   +:+    +:+    +:+   +:+      */
 /*   By: Roman Alexandrov <r.aleksandroff@gmail.com>                +#++:++#:    +#++:++#++:      */
 /*                                                                 +#+    +#+   +#+     +#+       */
 /*   Created: 2023/09/09 14:49:16                                 #+#    #+#   #+#     #+#        */
-/*   Updated: 2023/10/03 18:09:41                                ###    ###   ###     ###         */
+/*   Updated: 2023/11/12 11:40:41                                ###    ###   ###     ###         */
 /*                                                                                                */
 /*                                                                                                */
 /*   This function checks what Wi-Fi network the device is being connected to and sends an        */
 /*   according message into a Telegram chat.                                                      */
 /*                                                                                                */
 /* ********************************************************************************************** */
+
+#include "header.h"
 
 void  IRAM_ATTR ft_send_location(void)
 {
