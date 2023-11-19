@@ -15,7 +15,7 @@
 
 #include "header.h"
 
-void  ft_write_spiffs_file(const char* file_name, String input)
+short  ft_write_spiffs_file(const char* file_name, String input)
 {
     short i;
 
@@ -29,12 +29,16 @@ void  ft_write_spiffs_file(const char* file_name, String input)
         delay(100);
     }
     if (!file)
-        DEBUG_PRINTS("Failed to open %s file for writing in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", file_name, i, "", "");
+    {
+        DEBUG_PRINTS("Failed to open %s file for writing in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", file_name, (i - 1), "", "");
+        return (0);
+    }
     else
     {
         file.println(input);
         file.close();
     }
+    return (1);
 }
 
 String  ft_read_spiffs_file(const char* file_name)
@@ -53,8 +57,7 @@ String  ft_read_spiffs_file(const char* file_name)
     }
     if (!file)
     {
-        DEBUG_PRINTS("Failed to open %s file for reading in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", file_name, i, "", "");
-        output = "Unfortunatelly, the " + String(file_name) + " file was not found.";
+        DEBUG_PRINTS("Failed to open %s file for reading in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", file_name, (i - 1), "", "");
         file.close();
     }  
     else
@@ -81,7 +84,7 @@ void  ft_delete_spiffs_file(const char* file_name)
             LittleFS.remove(file_name);
             i++;
         }
-        DEBUG_PRINTS("Failed to delete %s file in LittleFS even after %d retries. The file dependant functions may not work as intended.\n", file_name, i, "", "");
+        DEBUG_PRINTS("Failed to delete %s file in LittleFS even after %d retries. The file dependant functions may not work as intended.\n", file_name, (i - 1), "", "");
     }
 }
 
@@ -97,6 +100,6 @@ void  IRAM_ATTR ft_spiffs_init(void)
         delay(100);
     }
     if (!LittleFS.begin(true))
-        DEBUG_PRINTF("\nFailed to mount LittleFS even after %d retries. Dependant functions will be unavailable during this programm cycle.\n", i);
+        DEBUG_PRINTF("\nFailed to mount LittleFS even after %d retries. Dependant functions will be unavailable during this programm cycle.\n", (i - 1));
 }
  

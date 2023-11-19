@@ -20,9 +20,6 @@
 
 #include "header.h"
 
-short ft_ota_mode(String chat_id);
-void  ft_check_incomming_messages(short cycles);
-
 inline void ft_compose_message(String ssid, IPAddress ip, String chat_id)
 {
     String  message;

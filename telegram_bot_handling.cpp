@@ -13,6 +13,10 @@
 /*   them accordingly. Waiting for new messages also serves as a loop for the OTA functions.      */
 /*   WARNING! DO NOT CALL THE ft_go_to_sleep() FUNCTION FROM ANY OF THESE FUNCTIONS! THE DEVICE   */
 /*   WOULD BECOME UNRESPONSIVE TO ANY MESSAGES FROM THE TELEGRAM CHAT!                            */
+/*   The "cycles" variable is also responsible for how long the device stays ON and responds to   */
+/*   the user's messages. E.g. cycles == WAIT_FOR_MESSAGES_LIMIT equals to ≈ 1 second;            */
+/*   cycles == 0 equals to ≈ 2 x WAIT_FOR_MESSAGES_LIMIT seconds; cycles == -32767 equals to      */
+/*   ≈ 2 x (32767 + WAIT_FOR_MESSAGES_LIMIT) seconds.                                             */
 /*                                                                                                */
 /* ********************************************************************************************** */
 
@@ -20,7 +24,6 @@
 
 short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
 {
-    short       cycles;
     String      message;
     static bool add_location_flag;
 
@@ -28,35 +31,31 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
     #ifdef PRIVATE
     if (chat_id != CHAT_ID)
     {
-        cycles = 0;
         bot.sendMessage(chat_id, "UNAUTHORIZED. ACCESS DENIED.\nThe device is unaccessable from this chat.\n\nhttps://www.youtube.com/watch?v=XV25MrouozE", "");
-        return (cycles);
+        return (0);
     }
     #endif 
     if (text == "/status")
     {
-        cycles = 0;
         add_location_flag = false;
         message = "I am connected to " + String(WiFi.SSID());   
         message += ". Signal strength is " + String(WiFi.RSSI());
         message += " dBm. My battery is " + String(ft_battery_check()) + "% charged, ";
         message += "software version " + String(SOFTWARE_VERSION);
         bot.sendMessage(chat_id, message, "Markdown");
-        return (cycles);
+        return (0);
     }
     else if (text == "/location")
     {
-        cycles = 0;
         add_location_flag = false;
         g_last_wifi = 0;
         ft_send_location();
-        return (cycles);
+        return (0);
     }
     else if (text == "/list locations")
     {
-        cycles = 0;
         add_location_flag = false;
-        if (!(ft_read_spiffs_file("/locations.txt")))
+        if (ft_read_spiffs_file("/locations.txt").isEmpty())
             message = "You have no saved locations just yet. Add them by using the /add location command";
         else
         {
@@ -64,11 +63,10 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
             message += ft_read_spiffs_file("/locations.txt");
         }
         bot.sendMessage(chat_id, message, "");
-        return (cycles);
+        return (0);
     }
     else if (text == "/add location")
     {
-        cycles = 0;
         add_location_flag = true;
         message = "You can add a new location for me to keep a track of and notify you about. ";
         message += "To do so simply write me the Wi-Fi name, password and the location description in your next message. ";
@@ -77,77 +75,76 @@ short  IRAM_ATTR ft_answer_engine(String chat_id, String text)
         message += "\n\n/CoffeeCafe Wi-Fi Free, LoveCoffee123, At Coffee Cafe in the city centre of Amsterdam, Netherlands";
         message += "\n\nIf you don't want to add any locations just yet, simply write me any other command.";
         bot.sendMessage(chat_id, message, "");
-        return (cycles);
+        return (0);
     }
     else if (text == "/delete locations")
     {
-        cycles = -32767;
         message = "All of your saved locations are about to be errased from my memory. Before it happens, I will output them into this chat, ";
         message += "so you could restore some of them in case you needed to. Here we go:";
         bot.sendMessage(chat_id, message, "");
         bot.sendMessage(chat_id, ft_read_spiffs_file("/locations.txt"), "");
         ft_delete_spiffs_file("/locations.txt");
         message.clear();
+        delay(3000);
         message = "Done! You have no saved locations!\n\nNow, before I turn off, you must add at least one location. ";
         message += "Otherwise I would not be able to connect to any Wi-Fi and you or anyone else would not be able to use me! ";
         message += "This cannot be done later.";
         bot.sendMessage(chat_id, message, "");
         message.clear();
-        message = "It can be any location. Your home Wi-Fi or your office Wi-Fi would do just fine. ";
-        message += "Simply write me the Wi-Fi name, password and the location description in your next message. ";
+        delay(2000);
+        message = "Simply write me the Wi-Fi name, password and the location description in your next message. ";
         message += "Please, start the message with the \"/\" sign and separate the pieces of information with a comma. ";
         message += "For example, your message could look like this:";
         message += "\n\n/My_Home_WiFi, HomeSweetHome123, At home in Brussels, Belgium";
         bot.sendMessage(chat_id, message, "");
         add_location_flag = true;
-        return (cycles);
+        return (-32767);
     }
     else if (text == "/ota")
     {
-        cycles = 0;
         add_location_flag = false;
         bot.sendMessage(chat_id, "To activate OTA Firmware Update enter your Developer Password", "");
-        return (cycles);
+        return (0);
     }
     else if (text == ("/" + String(OTA_PASSWORD)) || text == ("/ota " + String(OTA_PASSWORD)))
     {
         add_location_flag = false;
         bot.sendMessage(chat_id, "Password accepted.", "");
-        cycles = ft_ota_mode(chat_id);
-        return (cycles);
+        return (ft_ota_mode(chat_id));
     }
     else if (text == "/reboot")
     {
         bot.sendMessage(chat_id, "Rebooting!", "");
         g_reboot = true;
-        cycles = WAIT_FOR_MESSAGES_LIMIT;
-        return (cycles);
+        return (WAIT_FOR_MESSAGES_LIMIT);
     }
     else if (text == "/off")
     {
         bot.sendMessage(chat_id, "Switching off!", "");
-        cycles = WAIT_FOR_MESSAGES_LIMIT;
-        return (cycles);
+        return (WAIT_FOR_MESSAGES_LIMIT);
     }
     else
     {
-        cycles = 0;
         if (add_location_flag)
         {
-            add_location_flag = false;
             message = text;
             message.remove(0, 1);
-            ft_write_spiffs_file("/locations.txt", message);
-            bot.sendMessage(chat_id, "I've added a new location for you. You can confirm it by calling the \"list locations\" command", "");
+            if (!(ft_write_spiffs_file("/locations.txt", message)))
+                bot.sendMessage(chat_id, "Hmm... Something went wrong. Try sending me the location again", "");
+            else
+            {
+                add_location_flag = false;
+                bot.sendMessage(chat_id, "I've added a new location for you. You can confirm it by calling the \"list locations\" command", "");
+            }
         }
         else
         {
             bot.sendMessage(chat_id, "I'm sorry, I don't understand", "");
             bot.sendMessage(chat_id, "Try one of the following commands: status, location, list locations, add location, delete locations, ota, reboot, off. Every command should start with \"/\" sign", "");
         }
-        return (cycles);
+        return (0);
     }
-    return (cycles);
+    return (0);
 }
 
 short ft_new_messages(short numNewMessages)

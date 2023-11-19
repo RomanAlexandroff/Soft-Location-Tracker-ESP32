@@ -46,23 +46,18 @@ short  ft_battery_check(void)
     return (battery);
 }
 
-short  ft_battery_notification(void)
+void  ft_battery_notification(void)
 {
-    short battery;
+    short   battery;
+    String  charge;
 
+    esp_task_wdt_reset();
     battery = ft_battery_check();
+    charge = String(battery);
     DEBUG_PRINTF("Current battery state is %d%%\n", battery);
-    if (battery <= 15)
-    {
-        bot.sendMessage(CHAT_ID, "My battery is quite low. Please, charge me when you have time!", "");
-        return (WAIT_FOR_MESSAGES_LIMIT);
-    }
-    else if (battery >= 100)
-    {
-        bot.sendMessage(CHAT_ID, "I see I'm being charged. I will stay awake until the charging is complete just in case you need something from me.", "");
-        return (-32767);
-    }
-    else
-        return (WAIT_FOR_MESSAGES_LIMIT);                                         // WAIT_FOR_MESSAGES_LIMIT == check new messages only 1 time
+    if (battery <= 10)
+        bot.sendMessage(CHAT_ID, String("My battery is low — " + charge + "%. Please, charge me when you have time!"), "");
+    if (battery == 100 && esp_reset_reason() == ESP_RST_POWERON)
+        bot.sendMessage(CHAT_ID, "My battery is 100% charged", "");
 }
  

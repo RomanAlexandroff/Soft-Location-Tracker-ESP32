@@ -28,7 +28,7 @@
 #include <esp_task_wdt.h>
 #include "globals.h"
 
-#define SOFTWARE_VERSION        2.12
+#define SOFTWARE_VERSION        2.14
 #define PRIVATE                                                       // comment out this line to allow bot answer in any Telegram chat
 #define DEBUG                                                         // comment out this line to turn off Serial output
 #ifdef DEBUG
@@ -40,9 +40,9 @@
 #endif
 #define WD_TIMEOUT              8000                                  // watchdog, in milliseconds (5000 == 5 seconds; 8500 — system max val)
 #define CONNECT_TIMEOUT         3000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
-#define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == 2 seconds (80 == 160 seconds == 2,5 minutes)
+#define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == approx. 2 seconds (80 == 160 seconds == 2,5 minutes)
 
-void        ft_write_spiffs_file(const char* file_name, String input);
+short       ft_write_spiffs_file(const char* file_name, String input);
 String      ft_read_spiffs_file(const char* file_name);
 void        ft_delete_spiffs_file(const char* file_name);
 void        IRAM_ATTR ft_spiffs_init(void);
@@ -59,7 +59,7 @@ inline void ft_compose_message(String ssid, IPAddress ip, String chat_id);
 inline void ft_ElegantOTA_callbacks(String chat_id);
 short       ft_confirm_battery_charge(String chat_id);
 short       ft_ota_mode(String chat_id);
-short       ft_battery_notification(void);
+void        ft_battery_notification(void);
 short       ft_battery_check(void);
 void        ft_go_to_sleep(void);
 

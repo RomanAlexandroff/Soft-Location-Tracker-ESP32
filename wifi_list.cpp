@@ -59,7 +59,7 @@ void  IRAM_ATTR ft_wifi_list(void)
     }
     if (!file)
     {
-        DEBUG_PRINTF("Failed to open locations.txt file for reading in LittleFS even after %d retries. The file dependant function will be unavailable during this programm cycle.\n", (i - 1));
+        DEBUG_PRINTF("Failed to open locations.txt file for reading in LittleFS even after %d retries. The file dependant function may be unavailable during this programm cycle.\n", (i - 1));
         file.close();
         ft_backup_connection();
     }  
@@ -95,9 +95,6 @@ void  IRAM_ATTR ft_wifi_list(void)
         }
         file.close();
     }
-    wifiMulti.addAP(BACKUP_SSID1, BACKUP_PASSWORD1);
-    wifiMulti.addAP(BACKUP_SSID2, BACKUP_PASSWORD2);
-    wifiMulti.addAP(BACKUP_SSID3, BACKUP_PASSWORD3);
     esp_task_wdt_reset();
 }
  
