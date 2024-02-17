@@ -38,7 +38,7 @@
   #define DEBUG_PRINTF(x, y)
   #define DEBUG_PRINTS(q, w, e, r, t)
 #endif
-#define WD_TIMEOUT              8000                                  // watchdog, in milliseconds (5000 == 5 seconds; 8500 — system max val)
+#define WD_TIMEOUT              8000                                  // watchdog, in milliseconds (8500 — system max value)
 #define CONNECT_TIMEOUT         3000                                  // WiFi timeout per each AP, in milliseconds. Increase if cannot connect.
 #define WAIT_FOR_MESSAGES_LIMIT 80                                    // in seconds, 1 == approx. 2 seconds (80 == 160 seconds == 2,5 minutes)
 
